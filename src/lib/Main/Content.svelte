@@ -4,13 +4,16 @@
 	import ConditionalMedia from '$lib/Main/ConditionalMedia.svelte';
 	import PictureElements from '$lib/Main/PictureElements.svelte';
 	import Camera from '$lib/Main/Camera.svelte';
+	import Template from '$lib/Main/Template.svelte';
+	import Bar from '$lib/Main/Bar.svelte';
+	import Sensor from '$lib/Main/Sensor.svelte';
 	import Configure from '$lib/Main/Configure.svelte';
 	import Empty from '$lib/Main/Empty.svelte';
 
 	export let item: any;
 	export let sectionName: string | undefined = undefined;
 
-	const large = ['conditional_media', 'picture_elements', 'camera'];
+	const large = ['conditional_media', 'picture_elements', 'camera', 'template', 'bar', 'sensor'];
 </script>
 
 {#if item?.[SHADOW_ITEM_MARKER_PROPERTY_NAME] && large.includes(item?.type)}
@@ -27,6 +30,12 @@
 	<PictureElements sel={item} />
 {:else if item?.type === 'camera'}
 	<Camera sel={item} responsive={false} muted={true} controls={false} />
+{:else if item?.type === 'template'}
+	<Template sel={item} />
+{:else if item?.type === 'bar'}
+	<Bar sel={item} />
+{:else if item?.type === 'sensor'}
+	<Sensor sel={item} />
 {:else if item?.type === 'empty'}
 	<Empty sel={item} />
 {:else}

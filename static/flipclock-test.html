@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>FlipClock CSS Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #1a1a2e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-family: 'Oswald', system-ui, sans-serif;
+  font-weight: 500;
+  gap: 60px;
+  color: #fff;
+}
+.test-case { text-align: center; }
+.test-case h3 { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 16px; font-weight: 400; }
+
+.clock {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 12px;
+  font-size: 22px;
+}
+.dg { display: flex; gap: 5px; }
+
+/* ===== Approach A: height=100%, line-height=80px ===== */
+.a .fd { position: relative; width: 60px; height: 80px; perspective: 300px; }
+.a .h  { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; }
+.a .h span {
+  display: block; position: absolute; left: 0; width: 100%; height: 100%;
+  text-align: center; line-height: 80px; font-size: 1.8em; color: #fff;
+}
+.a .ht { top: 0; background: rgb(30,30,36); border-radius: 6px 6px 0 0; border-bottom: 1.5px solid rgba(0,0,0,0.6); }
+.a .ht span { top: 0; }
+.a .hb { bottom: 0; background: rgb(40,40,46); border-radius: 0 0 6px 6px; }
+.a .hb span { bottom: 0; }
+
+/* ===== Approach B: height=50%, flex + translateY ===== */
+.b .fd { position: relative; width: 60px; height: 80px; perspective: 300px; }
+.b .h  { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; }
+.b .h span {
+  display: flex; position: absolute; left: 0; width: 100%; height: 50%;
+  align-items: center; justify-content: center; font-size: 1.8em; color: #fff;
+}
+.b .ht { top: 0; background: rgb(30,30,36); border-radius: 6px 6px 0 0; border-bottom: 1.5px solid rgba(0,0,0,0.6); }
+.b .ht span { top: 0; transform: translateY(50%); }
+.b .hb { bottom: 0; background: rgb(40,40,46); border-radius: 0 0 6px 6px; }
+.b .hb span { bottom: 0; transform: translateY(-50%); }
+
+/* ===== Approach C: height=75%, flex + translateY(-50%) ===== */
+.c .fd { position: relative; width: 60px; height: 80px; perspective: 300px; }
+.c .h  { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; }
+.c .h span {
+  display: flex; position: absolute; left: 0; width: 100%; height: 75%;
+  align-items: center; justify-content: center; font-size: 1.8em; color: #fff;
+}
+.c .ht { top: 0; background: rgb(30,30,36); border-radius: 6px 6px 0 0; border-bottom: 1.5px solid rgba(0,0,0,0.6); }
+.c .ht span { top: 0; transform: translateY(-50%); }
+.c .hb { bottom: 0; background: rgb(40,40,46); border-radius: 0 0 6px 6px; }
+.c .hb span { bottom: 0; transform: translateY(50%); }
+
+/* ===== Approach D: simple - height=100%, line-height=200% ===== */
+.d .fd { position: relative; width: 60px; height: 80px; perspective: 300px; }
+.d .h  { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; }
+.d .h span {
+  display: block; position: absolute; left: 0; width: 100%;
+  height: 200%; text-align: center; font-size: 1.8em; color: #fff;
+}
+.d .ht { top: 0; background: rgb(30,30,36); border-radius: 6px 6px 0 0; border-bottom: 1.5px solid rgba(0,0,0,0.6); }
+.d .ht span { top: 0; line-height: 160px; }
+.d .hb { bottom: 0; background: rgb(40,40,46); border-radius: 0 0 6px 6px; }
+.d .hb span { bottom: 0; line-height: 160px; }
+
+.sep { font-size: 1.6em; color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+
+<div class="test-case">
+  <h3>A: height=100%, line-height=80px (original)</h3>
+  <div class="clock a">
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div></div>
+      <div class="fd"><div class="h ht"><span>1</span></div><div class="h hb"><span>1</span></div></div>
+    </div>
+    <div class="sep">:</div>
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>0</span></div><div class="h hb"><span>0</span></div></div>
+      <div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="test-case">
+  <h3>B: height=50%, flex + translateY(50%/-50%)</h3>
+  <div class="clock b">
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div></div>
+      <div class="fd"><div class="h ht"><span>1</span></div><div class="h hb"><span>1</span></div></div>
+    </div>
+    <div class="sep">:</div>
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>0</span></div><div class="h hb"><span>0</span></div></div>
+      <div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="test-case">
+  <h3>C: height=75%, flex + translateY(-50%/50%)</h3>
+  <div class="clock c">
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div></div>
+      <div class="fd"><div class="h ht"><span>1</span></div><div class="h hb"><span>1</span></div></div>
+    </div>
+    <div class="sep">:</div>
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>0</span></div><div class="h hb"><span>0</span></div></div>
+      <div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="test-case">
+  <h3>D: height=200%, line-height=160px (double)</h3>
+  <div class="clock d">
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div></div>
+      <div class="fd"><div class="h ht"><span>1</span></div><div class="h hb"><span>1</span></div></div>
+    </div>
+    <div class="sep">:</div>
+    <div class="dg">
+      <div class="fd"><div class="h ht"><span>0</span></div><div class="h hb"><span>0</span></div></div>
+      <div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

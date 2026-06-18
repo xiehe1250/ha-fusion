@@ -17,6 +17,9 @@
 	import Camera from '$lib/Main/Camera.svelte';
 	import ConditionalMedia from '$lib/Main/ConditionalMedia.svelte';
 	import Empty from '$lib/Main/Empty.svelte';
+	import Template from '$lib/Main/Template.svelte';
+	import Bar from '$lib/Main/Bar.svelte';
+	import Sensor from '$lib/Main/Sensor.svelte';
 	import ConfigButtons from '$lib/Modal/ConfigButtons.svelte';
 	import Ripple from 'svelte-ripple';
 	import PictureElements from '$lib/Main/PictureElements.svelte';
@@ -123,6 +126,28 @@
 				demo: $demo.media_player,
 				sel
 			}
+		},
+		{
+			id: 'template',
+			type: $lang('template'),
+			component: Template,
+			props: { sel, demo: true }
+		},
+		{
+			id: 'bar',
+			type: $lang('bar'),
+			component: Bar,
+			props: {
+				sel: { entity_id: $demo.sensor, name: 'Demo', id: -1 }
+			}
+		},
+		{
+			id: 'sensor',
+			type: $lang('sensor'),
+			component: Sensor,
+			props: {
+				sel: { entity_id: $demo.sensor, id: -1 }
+			}
 		}
 	];
 
@@ -167,6 +192,15 @@
 
 			case 'empty':
 				openModal(() => import('$lib/Modal/EmptyConfig.svelte'), { sel });
+				break;
+			case 'template':
+				openModal(() => import('$lib/Modal/TemplateConfig.svelte'), { sel });
+				break;
+			case 'bar':
+				openModal(() => import('$lib/Modal/BarConfig.svelte'), { sel });
+				break;
+			case 'sensor':
+				openModal(() => import('$lib/Modal/SensorConfig.svelte'), { sel });
 				break;
 			default:
 				openModal(() => import('$lib/Modal/MainItemConfig.svelte'), { sel });

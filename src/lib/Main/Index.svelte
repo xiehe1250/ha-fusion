@@ -181,7 +181,7 @@
 	}
 
 	function itemStyles(type: string) {
-		const large = ['conditional_media', 'picture_elements', 'camera'];
+		const large = ['conditional_media', 'picture_elements', 'camera', 'template', 'bar', 'sensor'];
 		return `
 			grid-column: ${large.includes(type) ? 'span 2' : 'span 1'};
 			grid-row: ${large.includes(type) ? 'span 4' : 'span 1'};

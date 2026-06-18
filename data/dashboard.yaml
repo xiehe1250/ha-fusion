@@ -12,9 +12,12 @@ views:
           - name: Test
             id: 2171067078835
             items:
-              - type: button
-                entity_id: light.studio_dator
-                id: 5008685947164
+              - id: 2833904969508
+                type: bar
+                entity_id: sensor.chuangmi_cn_493886852_212a01_power_consumption_p_5_1
+              - id: 5008685947164
+                type: sensor
+                entity_id: sensor.211106245280490_filter2_life
               - type: button
                 entity_id: light.vardagsrum
                 id: 6094154428386
@@ -50,18 +53,9 @@ views:
           - name: Media
             id: 7859955675791
             items:
-              - type: media
-                id: 5276106620601
-                conditional:
-                  - entity_id: sensor.plex_recently_added
-                    name: Senast tillagt
-                    icon: mdi:plex
-                    color: orange
-                  - entity_id: media_player.vardagsrum
-                  - entity_id: media_player.sovrum
-                  - entity_id: media_player.spotify
-                    icon: mdi:spotify
-                  - entity_id: media_player.kok
+              - id: 8169595825129
+                type: bar
+                entity_id: sensor.chuangmi_cn_493886852_212a01_electric_current_p_5_2
           - name: Övrigt
             items:
               - type: button
