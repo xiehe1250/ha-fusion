@@ -36,6 +36,7 @@
 	let stroke = sel?.stroke;
 
 	let numberElement: HTMLInputElement;
+	let storeUnsubscribe: (() => void) | undefined;
 
 	const range = {
 		min: 0,
@@ -65,9 +66,12 @@
 		$dashboard = $dashboard;
 	}
 
-	onDestroy(() => $record());
+	onDestroy(() => {
+		$record();
+		if (storeUnsubscribe) storeUnsubscribe();
+	});
 
-	connection.subscribe(async (conn) => {
+	storeUnsubscribe = connection.subscribe(async (conn) => {
 		if (!conn) return;
 
 		try {

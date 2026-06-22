@@ -77,6 +77,7 @@
 
 	.visible {
 		grid-template-rows: 1fr;
+		pointer-events: auto;
 	}
 
 	.expandable {

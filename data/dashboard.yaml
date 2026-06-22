@@ -1,292 +1,456 @@
-theme: godis
+theme: muted
 hide_views: false
 hide_sidebar: false
 sidebarWidth: 391
 views:
-  - name: Hemma
+  - name: 一楼
     id: 6467602449648
     sections:
       - type: horizontal-stack
         id: 5078078976670
         sections:
-          - name: Test
-            id: 2171067078835
+          - name: 灯光
             items:
-              - id: 2833904969508
-                type: bar
-                entity_id: sensor.chuangmi_cn_493886852_212a01_power_consumption_p_5_1
-              - id: 5008685947164
-                type: sensor
-                entity_id: sensor.211106245280490_filter2_life
-              - type: button
-                entity_id: light.vardagsrum
-                id: 6094154428386
-                name: Belysning
-              - type: button
-                entity_id: light.vardagsrum_horna
-                color: '#1cd760'
-                marquee: true
-                id: 4795962599238
-                name: Hörnlampa
-              - type: button
-                entity_id: media_player.sony_bravia_tv
-                id: 7351468287678
-              - type: button
-                id: 3728122340522
-                entity_id: switch.deltaco_sh_p01_socket
-          - name: Studio
-            id: 9828119797472
+              - id: 8182838451630
+                type: hass_button
+                entity_id: light.yeelink_cn_584594145_ceiling10_s_2_light
+                name: 吊灯
+                icon: cbi:yeelight-meteorite
+              - id: 9981529870358
+                type: hass_button
+                entity_id: light.pmfbj_cn_1003840076_xsx340_s_2
+                name: 吸顶灯
+                icon: cbi:livingroom-group
+              - id: 4595070349285
+                type: hass_button
+                entity_id: >-
+                  light.shu_fang_zhi_neng_san_jian_kai_guan_s1_meshban_2_xi_ding_deng_zuo_jian
+                icon: carbon:mac
+              - id: 5427691910061
+                type: hass_button
+                entity_id: light.novo_cn_1113725395_n31_s_3_ambient_light
+                name: 餐厅氛围灯
+                icon: cbi:yeelight-strip
+              - id: 6281151508040
+                type: hass_button
+                entity_id: light.mvs_cn_1117197878_wy0a02_s_2_light
+                icon: arcticons:wled
+                name: 客厅氛围灯
+              - id: 2465755930289
+                type: hass_button
+                entity_id: light.novo_cn_1113896991_n31_s_3_ambient_light
+                icon: mingcute:light-line
+              - id: 3349327856923
+                type: hass_button
+                entity_id: light.ke_ting_kai_guan_xi_ding_deng_zhong_jian
+                name: 厨房吸顶灯
+                icon: cbi:kitchen-group
+              - id: 702830334605
+                type: hass_button
+                entity_id: light.yi_lou_xi_shou_jian_kai_guan_deng_an_jian_1
+                icon: fa7-solid:hands-wash
+              - id: 5535647133092
+                type: hass_button
+                entity_id: light.lemesh_cn_1115217029_wy0c15_s_2_light
+                name: 青空灯
+                icon: arcticons:sunlight
+            id: 2578203168429
+          - name: 开关
             items:
-              - type: button
-                entity_id: light.studio_group
-                id: 3316142550855
-              - type: button
-                entity_id: switch.imac
-                id: 3575493192177
-              - type: button
-                entity_id: switch.gosund_monitors_switch
-                id: 8082348418851
-                icon: material-symbols:speaker
+              - id: 3909898211064
+                type: hass_button
+                entity_id: switch.zimi_cn_1110739360_zncz01_on_p_2_1
+                icon: streamline-kameleon-color:plug
+                name: 插座1
+              - id: 1379912945149
+                type: hass_button
+                entity_id: switch.zimi_cn_1110776414_zncz01_on_p_2_1
+                name: 插座2
+                icon: streamline-kameleon-color:plug
+              - id: 3001497899835
+                type: hass_button
+                entity_id: switch.iot_cn_943451567_jdls1_on_p_2_1
+                name: 联想电脑
+                icon: simple-icons:lenovo
+              - id: 9882069951784
+                type: hass_button
+                entity_id: switch.lxzn_cn_830223663_cbcsmj_on_p_2_1
+                icon: simple-icons:panasonic
+                name: 空调电源
+            id: 194135700834
+          - name: 环境
+            items:
+              - id: 4458882107257
+                type: hass_button
+                entity_id: climate.090615_cn_proxy_707764069_00002_ktp
+                name: 空调
+                icon: simple-icons:panasonic
+              - id: 4415168472042
+                type: hass_button
+                entity_id: climate.208907219042894_climate
+                icon: simple-icons:toshiba
+              - id: 5974226456654
+                type: hass_button
+                entity_id: fan.dmaker_cn_468739274_p8_s_2_fan
+                name: 客厅风扇
+                icon: material-symbols:car-fan-mid-right
+              - id: 4067115690387
+                type: hass_button
+                entity_id: fan.dmaker_cn_810586287_p8_s_2_fan
+                name: 电脑房风扇
+                icon: material-symbols:car-fan-mid-right
+              - id: 9898644220176
+                type: hass_button
+                entity_id: cover.novo_cn_1113896991_n31_s_2_curtain
+                name: 电脑房窗帘
+              - id: 9648864035303
+                type: hass_button
+                entity_id: cover.linp_cn_2079468032_ec1db_s_2_curtain
+                name: 客厅窗帘
+              - id: 3776912619494
+                type: hass_button
+                entity_id: cover.novo_cn_1113725395_n31_s_2_curtain
+                name: 餐厅窗帘
+              - id: 836747532417
+                type: hass_button
+                entity_id: fan.xiaomi_cn_2150351834_sa6_s_2_air_purifier
+                icon: cbi:xiaomi-air-purifier-pro
+                name: 空气净化器
+            id: 4549686492585
+      - name: 环境监测
+        items:
+          - id: 3157527573253
+            type: graph
+            entity_id: sensor.daikin_air_sensor_fcfd1c_daikin_temperature_sensor
+            name: 温度
+          - id: 9405664820625
+            type: graph
+            entity_id: sensor.daikin_air_sensor_fcfd1c_daikin_humidity_sensor
+          - id: 5674538526163
+            type: graph
+            entity_id: sensor.daikin_air_sensor_fcfd1c_daikin_pm2_5_sensor
+          - id: 2372001172335
+            type: template
+            template: >-
+              {% set t =
+
+              states('sensor.daikin_air_sensor_fcfd1c_daikin_temperature_sensor')
+
+              | float(0)
+
+              %}
+
+
+              <center>
+
+
+              <div style="
+
+              font-size:48px;
+
+              font-weight:500;
+
+
+              color:
+
+              {% if t < 18 %}
+
+              #4A90E2
+
+              {% elif t < 26 %}
+
+              #66BB6A
+
+              {% elif t < 30 %}
+
+              #FF9800
+
+              {% else %}
+
+              #FF5252
+
+              {% endif %}
+
+              ;
+
+              ">
+
+
+              {{ t }}°
+
+
+              </div>
+        id: 3808964549390
       - type: horizontal-stack
-        id: 4240433563768
         sections:
-          - name: Media
-            id: 7859955675791
+          - name: 媒体
             items:
-              - id: 8169595825129
-                type: bar
-                entity_id: sensor.chuangmi_cn_493886852_212a01_electric_current_p_5_2
-          - name: Övrigt
+              - id: 3983454232623
+                type: conditional_media
+                entity_id: sensor.192_168_11_190_plex_recently_added
+                media_players:
+                  - entity_id: media_player.ke_ting
+                  - entity_id: media_player.zhu_ren_fang
+                  - entity_id: media_player.ke_ting_apple_tv_4k
+                  - entity_id: media_player.ke_ting_chuang_wei_dian_shi
+                show_timeout: true
+            id: 9153890352964
+          - name: 摄像头
             items:
-              - type: button
-                id: 4326750373921
-                entity_id: light.badrum_group
-              - type: button
-                id: 6654837792944
-                entity_id: switch.gosund_fan_switch
-                icon: mdi:fan
-              - type: button
-                id: 9182560073626
-                entity_id: light.garderob_lampa
-                name: Garderob
-                icon: material-symbols:door-front-sharp
-              - type: button
-                id: 6583508288448
-                entity_id: light.hall_group
-                name: Hall
-              - type: button
-                entity_id: light.sovrum_group
-                id: 4536918822520
-              - type: button
-                entity_id: climate.ac
-                marquee: true
-                id: 2763550457343
-                name: Klimat
-              - type: button
-                entity_id: switch.ps5_635_power
-                color: '#1cd760'
-                marquee: true
-                id: 8427787269294
-                name: Playstation
-              - type: button
-                entity_id: media_player.samsung
-                id: 1503994513807
-            id: 7274165372538
-      - name: Hemma
-        items:
-          - type: button
-            id: 5560216674913
-            entity_id: person.matte
-            icon: fluent-emoji-flat:alien
-          - type: button
-            id: 8128083996424
-            entity_id: person.sanja
-          - type: button
-            id: 3574383219011
-            entity_id: script.home_leave
-            icon: fluent:hand-wave-20-filled
-          - type: button
-            id: 3827902926530
-            entity_id: script.home_arrive
-            icon: material-symbols:home-rounded
-        id: 1412018494330
-  - name: Entities
-    icon: material-symbols:filter-list-rounded
+              - id: 4201456157781
+                type: camera
+                entity_id: camera.lu_tai_dui_wai
+                grid_span: 2
+              - id: 5105183878951
+                type: camera
+                entity_id: camera.generic_dahua_001
+                grid_span: 2
+              - id: 5642547271817
+                type: camera
+                entity_id: camera.lu_tai_dui_wai
+                grid_span: 2
+            id: 2318927918231
+          - name: 机房
+            items: []
+            id: 433941466504
+        id: 5768726495924
+  - name: 二楼
+    icon: mdi:home-floor-2
     id: 5813909951190
-    sections:
-      - name: Test
-        items:
-          - type: button
-            id: 3188058166584
-            entity_id: timer.test
-            name: Timer
-          - type: button
-            id: 4014538054364
-            entity_id: update.hacs_update
-            name: Update
-          - type: button
-            id: 1542804203536
-            entity_id: vacuum.morty
-            name: Vacuum
-          - type: button
-            id: 6145994572695
-            entity_id: weather.smhi_home
-            name: Weather
-          - type: button
-            id: 1443718504784
-            entity_id: zone.home
-            name: Zone
-          - type: button
-            id: 8859082285036
-            entity_id: sun.sun
-          - type: button
-            id: 3600633343715
-            entity_id: switch.galaxy_tab_a_screensaver
-            name: Switch
-          - type: button
-            id: 8233675559365
-            entity_id: sensor.badrum_motion_battery
-            name: Sensor
-          - type: button
-            id: 7404639096964
-            entity_id: select.conditional_media
-            name: Select
-          - type: button
-            id: 8625756439435
-            entity_id: script.home_arrive
-            name: Script
-          - type: button
-            id: 5713628080695
-            entity_id: scene.home_below_horizon
-            name: Scene
-          - type: button
-            id: 4572210401136
-            entity_id: remote.vardagsrum
-            name: Remote
-          - type: button
-            id: 4275494337776
-            entity_id: person.matte
-            name: Person
-          - type: button
-            id: 6609447826960
-            entity_id: number.galaxy_tab_a_screensaver_brightness
-            name: Number
-          - type: button
-            id: 8822164265367
-            entity_id: media_player.tablet
-            name: Media player
-          - type: button
-            id: 6295149030308
-            entity_id: light.studio_dator
-            name: Light
-          - type: button
-            id: 9445324699683
-            entity_id: input_number.monitors_volume
-            name: Input number
-          - type: button
-            id: 2832875690525
-            entity_id: input_datetime.sleep_notify_torrent
-            name: Input Datetime
-          - type: button
-            id: 5329753290519
-            entity_id: input_boolean.imac_lock
-            name: Input boolean
-          - type: button
-            id: 8154800117105
-            entity_id: event.badrum_dimmer_button_1
-            name: Event
-          - type: button
-            id: 6399086292020
-            entity_id: image.template_image
-            name: Image
-          - type: button
-            id: 8970334871265
-            entity_id: device_tracker.iphone
-            name: Device tracker
-          - type: button
-            id: 5981318553491
-            entity_id: climate.ac
-            name: Climate
-          - type: button
-            name: Automation
-            id: 1477424416058
-            entity_id: automation.backup_ha_monthly
-          - type: button
-            name: Binary sensor
-            id: 1045768288013
-            entity_id: binary_sensor.galaxy_tab_a_device_admin
-          - type: button
-            id: 7826433574180
-            entity_id: button.galaxy_tab_a_load_start_url
-            name: Button
-          - type: button
-            name: Calendar
-            id: 8928742612730
-            entity_id: calendar.home_assistant_devs
-          - type: button
-            name: Camera
-            id: 4466621036589
-            entity_id: camera.ipcam
-        id: 3178723045273
+    sections: []
 sidebar:
-  - type: time
-    id: 3781246197457
-    hour12: false
-    seconds: false
-  - type: date
-    format: test
-    hide: none
-    shortday: false
-    shortmonth: false
-    id: 2790676345913
-  - type: template
-    id: 1506524483596
-    template: <b>Vecka {{ now().strftime("%W") }}</b>
-  - type: sensor
-    entity_id: sensor.template_greet
-    date: false
-    id: 2790676343773
-  - type: weather
-    entity_id: weather.openweathermap
-    weather_sensor: sensor.openweathermap_weather
-    extra_sensor: sensor.openweathermap_forecast_precipitation_probability
-    extra_sensor_icon: mdi:drop
-    icon_pack: meteocons
-    id: 2790676343766
-  - type: divider
-    id: 6627143742873
-  - type: sensor
-    entity_id: sensor.template_laundry
-    id: 2790676343722
-  - type: sensor
-    entity_id: sensor.template_vacuum
-    id: 2790676343733
-  - type: sensor
-    entity_id: sensor.template_mailbox
-    id: 2790676343744
-    date: false
-  - type: sensor
-    entity_id: sensor.template_battery
-    id: 2790676343711
-  - type: navigate
-    id: 4055198699454
-  - type: timer
-    entity_id: timer.test
-    id: 5786160817081
+  - id: 3781246197457
+    type: template
+    template: |-
+      <div style="text-align:center; font-size:64px;">
+      {% set m = states('sensor.xin_xi_zhong_xi_yue_xiang_phase') %}
+
+      {% if m in ['新月'] %}
+      🌑
+      {% elif m in ['娥眉月','蛾眉月'] %}
+      🌒
+      {% elif m in ['上弦月'] %}
+      🌓
+      {% elif m in ['盈凸月'] %}
+      🌔
+      {% elif m in ['满月'] %}
+      🌕
+      {% elif m in ['亏凸月'] %}
+      🌖
+      {% elif m in ['下弦月'] %}
+      🌗
+      {% elif m in ['残月'] %}
+      🌘
+      {% else %}
+      🌙
+      {% endif %}
+      </div>
+  - id: 2790676345913
+    type: template
+    template: |-
+      <center>
+
+      <div style="
+      font-size:78px;
+      font-weight:500;
+      line-height:1;
+      font-family:-apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+      ">
+      {{ states('sensor.time') }}
+      </div>
+
+      <div style="
+      margin-top:10px;
+      font-size:18px;
+      opacity:.55;
+      ">
+      {{ now().strftime('%A') }}
+       ·
+      {{ states('sensor.date') }}
+      </div>
+
+      </center>
   - type: divider
     id: 3349273168863
-  - type: radial
-    entity_id: sensor.processor_use
-    id: 1790176343741
-    stroke: 7
-    name: CPU
-  - id: 2805049029311
-    entity_id: sensor.memory_use_percent
-    type: bar
-    name: RAM
-    math: '22'
-  - type: graph
-    id: 7932142060181
-    period: day
-    entity_id: sensor.memory_use_percent
-    stroke: 2
+  - id: 1506524483596
+    type: template
+    template: |-
+      {% set v =
+      states('sensor.chu_fang_kong_qi_jian_ce_fa_mei_ke_neng_xing')|float(0)
+      %}
+
+      <center>
+
+      <div style="
+      font-size:42px;
+      line-height:1;
+      margin-bottom:6px;
+      ">
+
+      {% if v<30 %}
+      ☀️
+      {% elif v<60 %}
+      🌤️
+      {% elif v<80 %}
+      💧
+      {% else %}
+
+      {% endif %}
+
+      </div>
+
+      <div style="
+      font-size:28px;
+      font-weight:600;
+      ">
+
+      </div>
+
+      <div style="
+      margin-top:6px;
+      font-size:28px;
+      opacity:.55;
+      ">
+
+      {% if v<30 %}
+      发霉？这辈子都不可能
+      {% elif v<60 %}
+      再不开窗，我长毛啦
+      {% elif v<80 %}
+      发霉准备中
+      {% else %}
+      正在发霉中
+      {% endif %}
+
+
+      </center>
+  - id: 2790676343773
+    type: template
+    template: |+
+      <BR>
+      <BR>
+      <BR>
+      <BR>
+      <BR>
+      <BR>
+      <BR>
+      <BR>
+
+  - type: divider
+    id: 6627143742873
+  - id: 2790676343722
+    type: template
+    template: |-
+      <div style="
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+      ">
+        {% set n = states('sensor.lights_on_dashboard_counter_2') | int %}
+        
+        {% if n == 0 %}
+          所有灯已关闭
+        {% else %}
+          当前有{{ n }}盏灯开着
+        {% endif %}
+      </div>
+  - id: 2790676343733
+    type: camera
+    entity_id: camera.fornt_door_main
+    stream: true
+  - id: 2790676343744
+    type: template
+    template: |-
+      <div style="
+        display: flex;
+        justify-content: center
+        align-items: center;
+        gap: 0px;
+      ">
+
+        <!-- 左：空调数量 -->
+        <div style="
+          text-align: center;
+          min-width: 120px;
+        ">
+          <div style="
+            font-size: 24px;
+            font-weight: 700;
+            color: #4fc3f7;
+          ">
+            ❄️ {{
+              expand([
+                'climate.208907219042894_climate',
+                'climate.090615_cn_proxy_707764069_00005_ktp',
+                'climate.090615_cn_proxy_707764069_00002_ktp',
+                'climate.090615_cn_proxy_707764069_00004_ktp',
+                'climate.xiaomi_cn_961342950_h09h00',
+                'climate.090615_cn_proxy_707764069_00001_ktp',
+                'climate.090615_cn_proxy_707764069_00003_ktp'
+              ])
+              | rejectattr('state','eq','off')
+              | list
+              | count
+            }}
+          </div>
+        </div>
+
+        <!-- 右：功率 -->
+        <div style="
+          text-align: center;
+          min-width: 160px;
+        ">
+          <div style="
+            font-size: 24px;
+            font-weight: 700;
+            color: #ffcc80;
+          ">
+            ⚡ {{
+              (
+                states('sensor.lxzn_cn_830223663_cbcsmj_electric_power_p_3_6') | float(0) +
+                states('sensor.208907219042894_realtime_power') | float(0)
+              ) | round(1)
+            }} W
+          </div>
+        </div>
+
+      </div>
+  - id: 2790676343711
+    type: template
+    template: |-
+      <div style="text-align:center; font-size:24px; font-weight:600;">
+      本月电费：<span style="color:#ffcc80;">
+      {{ states('sensor.ben_yue_dian_fei') | float(0) | round(2) }}
+      </span> 元
+      </div>
+  - id: 4055198699454
+    type: template
+    template: >-
+      {% set b =
+      states('sensor.che_ku_xiao_xiao_niu_niu_scooter_xiao_xiao_niu_batterycharge')|float(0)
+      %}
+
+      {% set km =
+      states('sensor.che_ku_xiao_xiao_niu_niu_scooter_xiao_xiao_niu_estimatedmileage')|float(0)
+      %}
+
+      {% set lat =
+      states('sensor.che_ku_xiao_xiao_niu_niu_scooter_xiao_xiao_niu_latitude')|float(0)
+      %}
+
+      {% set lon =
+      states('sensor.che_ku_xiao_xiao_niu_niu_scooter_xiao_xiao_niu_longitude')|float(0)
+      %}
+
+
+      <div style="text-align:center; font-size:24px; font-weight:600;">
+
+      🔋 {{ b|round(0) }}% ｜ 🛵 {{ km|round(1) }} km
+
+      </div>
+
+
+      </div>

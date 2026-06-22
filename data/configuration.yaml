@@ -1,1 +1,8 @@
-locale: en
+locale: zh-Hans
+token: >-
+  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI5YzY2ZDJmZjY4NGE0MzkwODNlNWRmYTc2ZDY1OWM3OSIsImlhdCI6MTc4MTUyMDg3MCwiZXhwIjoyMDk2ODgwODcwfQ.E0b61GX6NHjkqS_q6MJPvH9JgGw8gPFsJ-3MuwXZ4SM
+addons:
+  youtube: false
+  maptiler:
+    apikey: rgij9klOZHGVVhAwogOD
+custom_js: true

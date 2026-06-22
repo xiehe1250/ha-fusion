@@ -20,6 +20,9 @@
 	$: entity = (demo && $states?.[demo]) || (sel?.entity_id ? $states?.[sel?.entity_id] : undefined);
 	$: frontend_stream_type = entity?.attributes?.frontend_stream_type;
 	$: size = sel?.size === 'contain' ? 'contain' : 'cover';
+	$: gridSpan = sel?.grid_span || 4;
+	$: cameraHeight = responsive ? '100%' : `calc(${$itemHeight}px * ${gridSpan} + 0.4rem * ${Math.max(0, gridSpan - 1)})`;
+	$: cameraWidth = responsive ? '100%' : `calc(7.25rem * ${gridSpan} + 0.4rem * ${Math.max(0, gridSpan - 1)})`;
 
 	$: props = {
 		entity,
@@ -66,8 +69,8 @@
 <button
 	style:background-size={size}
 	style:cursor={$editMode || responsive ? 'unset' : 'pointer'}
-	style:height={responsive ? '100%' : `calc(${$itemHeight}px * 4 + 0.4rem * 3)`}
-	style:width={responsive ? '100%' : 'calc(14.5rem * 2 + 0.4rem)'}
+	style:height={cameraHeight}
+	style:width={cameraWidth}
 	on:click={handleClick}
 >
 	{#if loaderVisible && !$editMode}
@@ -113,7 +116,7 @@
 	{/await}
 
 	<!-- info -->
-	{#if muted && !responsive}
+	{#if muted && !responsive && gridSpan > 1}
 		{#await import('$lib/Main/Camera/Info.svelte') then Info}
 			<svelte:component this={Info.default} {sel} {entity} />
 		{/await}

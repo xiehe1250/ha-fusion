@@ -152,6 +152,7 @@ export interface CameraItem {
 	entity_id?: string;
 	stream?: boolean;
 	size?: string;
+	grid_span?: number;
 	hide_mobile?: boolean;
 }
 

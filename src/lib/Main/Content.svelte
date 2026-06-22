@@ -1,19 +1,20 @@
 <script lang="ts">
 	import { SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
 	import Button from '$lib/Main/Button.svelte';
+	import HassButton from '$lib/Main/HassButton.svelte';
 	import ConditionalMedia from '$lib/Main/ConditionalMedia.svelte';
 	import PictureElements from '$lib/Main/PictureElements.svelte';
 	import Camera from '$lib/Main/Camera.svelte';
 	import Template from '$lib/Main/Template.svelte';
 	import Bar from '$lib/Main/Bar.svelte';
-	import Sensor from '$lib/Main/Sensor.svelte';
+	import Graph from '$lib/Main/Graph.svelte';
 	import Configure from '$lib/Main/Configure.svelte';
 	import Empty from '$lib/Main/Empty.svelte';
 
 	export let item: any;
 	export let sectionName: string | undefined = undefined;
 
-	const large = ['conditional_media', 'picture_elements', 'camera', 'template', 'bar', 'sensor'];
+	const large = ['conditional_media', 'picture_elements', 'camera', 'template', 'bar', 'graph'];
 </script>
 
 {#if item?.[SHADOW_ITEM_MARKER_PROPERTY_NAME] && large.includes(item?.type)}
@@ -24,6 +25,8 @@
 	<Configure sel={item} />
 {:else if item?.type === 'button'}
 	<Button sel={item} {sectionName} />
+{:else if item?.type === 'hass_button'}
+	<HassButton sel={item} {sectionName} />
 {:else if item?.type === 'conditional_media'}
 	<ConditionalMedia sel={item} />
 {:else if item?.type === 'picture_elements'}
@@ -34,8 +37,8 @@
 	<Template sel={item} />
 {:else if item?.type === 'bar'}
 	<Bar sel={item} />
-{:else if item?.type === 'sensor'}
-	<Sensor sel={item} />
+{:else if item?.type === 'graph'}
+	<Graph sel={item} />
 {:else if item?.type === 'empty'}
 	<Empty sel={item} />
 {:else}

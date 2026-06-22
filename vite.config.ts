@@ -71,6 +71,10 @@ export default defineConfig({
 			'/api/': {
 				target: process.env.HASS_URL,
 				changeOrigin: true
+			},
+			'/192.168.11.190_plex_recently_added': {
+				target: process.env.HASS_URL,
+				changeOrigin: true
 			}
 		}
 	}

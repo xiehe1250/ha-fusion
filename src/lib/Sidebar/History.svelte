@@ -11,6 +11,7 @@
 	let durationDate: string | undefined;
 	let data: TimelineData = { totalDuration: 0, events: [] };
 	let unsubscribe: () => void;
+	let storeUnsubscribe: (() => void) | undefined;
 
 	const setTime = () => {
 		if (period) start_time = new Date(new Date().getTime() - getMs(period));
@@ -28,10 +29,16 @@
 	}
 
 	// update start_time and end_time every minute
-	setInterval(setTime, 60 * 1000);
+	const timeInterval = setInterval(setTime, 60 * 1000);
 
 	$: if (entity_id) {
-		connection.subscribe((conn) => {
+		// 先取消旧的 store 订阅
+		if (storeUnsubscribe) {
+			storeUnsubscribe();
+			storeUnsubscribe = undefined;
+		}
+
+		storeUnsubscribe = connection.subscribe((conn) => {
 			conn
 				?.subscribeMessage(
 					(res) => {
@@ -71,6 +78,8 @@
 	};
 
 	onDestroy(() => {
+		clearInterval(timeInterval);
+		if (storeUnsubscribe) storeUnsubscribe();
 		if (unsubscribe) unsubscribe();
 	});
 

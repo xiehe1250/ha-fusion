@@ -180,11 +180,23 @@
     `;
 	}
 
-	function itemStyles(type: string) {
-		const large = ['conditional_media', 'picture_elements', 'camera', 'template', 'bar', 'sensor'];
+	function itemStyles(type: string, gridSpan?: number) {
+		const large = ['conditional_media', 'picture_elements', 'template', 'bar', 'graph'];
+		const hassSmall = ['hass_button'];
+		let colSpan: number, rowSpan: number;
+		if (type === 'camera') {
+			const span = gridSpan || 4;
+			colSpan = span; rowSpan = span;
+		} else if (hassSmall.includes(type)) {
+			colSpan = 1; rowSpan = 1;
+		} else if (large.includes(type)) {
+			colSpan = 4; rowSpan = 4;
+		} else {
+			colSpan = 2; rowSpan = 1;
+		}
 		return `
-			grid-column: ${large.includes(type) ? 'span 2' : 'span 1'};
-			grid-row: ${large.includes(type) ? 'span 4' : 'span 1'};
+			grid-column: span ${colSpan};
+			grid-row: span ${rowSpan};
 			display: ${type ? '' : 'none'};
     `;
 	}
@@ -337,7 +349,7 @@
 										class="item"
 										animate:flip={{ duration: $motion }}
 										tabindex="-1"
-										style={itemStyles(item?.type)}
+										style={itemStyles(item?.type, item?.grid_span)}
 									>
 										<Content {item} sectionName={stackSection?.name} />
 									</div>
@@ -403,7 +415,7 @@
 							class="item"
 							animate:flip={{ duration: $motion }}
 							tabindex="-1"
-							style={itemStyles(item?.type)}
+							style={itemStyles(item?.type, item?.grid_span)}
 						>
 							<Content {item} sectionName={section?.name} />
 						</div>
@@ -442,7 +454,7 @@
 		border-radius: 0.6rem;
 		outline-offset: -2px;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, 14.5rem);
+		grid-template-columns: repeat(auto-fill, 7.25rem);
 		grid-auto-rows: min-content;
 		gap: 0.4rem;
 		border-radius: 0.6rem;
@@ -470,6 +482,7 @@
 			flex-wrap: wrap;
 		}
 	}
+
 
 	.scenes {
 		display: grid;

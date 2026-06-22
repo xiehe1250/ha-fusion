@@ -14,11 +14,8 @@ const config = {
 		}
 	},
 	vitePlugin: {
-		// dev inspector
-		inspector: {
-			toggleKeyCombo: 'control-shift',
-			showToggleButton: 'never'
-		}
+		// dev inspector (disabled due to postcss parsing error)
+		inspector: false
 	}
 };
 

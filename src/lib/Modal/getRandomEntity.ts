@@ -1,4 +1,5 @@
 import type { Connection, HassEntities, HassEntity } from 'home-assistant-js-websocket';
+import { get } from 'svelte/store';
 
 /**
  * Returns a random entity_id from provided array
@@ -113,11 +114,12 @@ export function getGraphEntity(
 	callback: (id: string | undefined) => void
 ) {
 	if (states === undefined) return;
-	connection.subscribe(async (conn: Connection) => {
-		if (!conn) {
-			callback(undefined);
-			return;
-		}
+	const conn = get(connection) as Connection;
+	if (!conn) {
+		callback(undefined);
+		return;
+	}
+	(async () => {
 		try {
 			const [listStatistics, validateStatistics]: [any, any] = await Promise.all([
 				conn.sendMessagePromise({ type: 'recorder/list_statistic_ids' }),
@@ -146,7 +148,7 @@ export function getGraphEntity(
 			console.error(err);
 			callback(undefined);
 		}
-	});
+	})();
 }
 
 /**

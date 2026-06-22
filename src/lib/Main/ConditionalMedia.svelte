@@ -37,14 +37,81 @@
 	let remaining: number | undefined;
 	let overlayIconState: string | undefined;
 
-	// nothing_playing entity
+	// swipe card state - 在多个媒体播放器之间切换
+	let currentIndex = 0;
+	let swipeStartX = 0;
+	let swipeStartY = 0;
+	let swipeDeltaX = 0;
+	let isSwiping = false;
+	const SWIPE_THRESHOLD = 50; // minimum px to trigger swipe
+
+	// 构建可滑动的卡片列表：每个 media_player 一个卡片 + Plex recently added（如果有配置）
+	$: swipeCards = (() => {
+		const cards: Array<{ type: 'player' | 'plex'; entityId?: string; name?: string }> = [];
+		
+		// 添加每个 media_player 作为独立卡片
+		if (sel?.media_players && Array.isArray(sel.media_players)) {
+			for (const mp of sel.media_players) {
+				if (mp?.entity_id) {
+					const ent = $states?.[mp.entity_id];
+					cards.push({
+						type: 'player',
+						entityId: mp.entity_id,
+						name: getName(undefined, ent) || mp.entity_id
+					});
+				}
+			}
+		}
+		
+		// 如果有 Plex entity_id 配置，添加 Plex recently added 卡片作为最后一张
+		if (sel?.entity_id) {
+			cards.push({
+				type: 'plex',
+				entityId: sel.entity_id,
+				name: sel?.name || 'Plex'
+			});
+		}
+		
+		return cards;
+	})();
+
+	// 当卡片列表变化时重置索引
+	$: if (swipeCards.length > 0 && currentIndex >= swipeCards.length) {
+		currentIndex = 0;
+	}
+
+	// 当前显示的卡片
+	$: currentCard = swipeCards[currentIndex];
+
+	// nothing_playing entity (Plex recently added)
 	$: entity = $states?.[demo || sel?.entity_id];
-	$: entity_data = entity?.attributes?.data?.[1];
-	$: fanart = entity_data?.fanart;
-	$: poster = entity_data?.poster;
+
+	// 提取 data 数组中所有有 title 的项（跳过 data[0] 配置模板）
+	$: mediaItems = (() => {
+		const d = entity?.attributes?.data;
+		if (!d || !Array.isArray(d)) return [];
+		const items = [];
+		for (let i = 1; i < d.length; i++) {
+			if (d[i]?.title) items.push(d[i]);
+		}
+		return items;
+	})();
+
+	$: entity_data = mediaItems[0] || undefined;
+	$: fanart = entity_data?.fanart || undefined;
+	$: poster = entity_data?.poster || undefined;
 	$: entity_entity_picture = entity?.attributes?.entity_picture;
 
-	// isolate each attribute to prevent mass reactivity
+	// 当前卡片的媒体播放器状态
+	$: cardPlayer = currentCard?.type === 'player' ? $states?.[currentCard.entityId || ''] : undefined;
+	$: cardState = cardPlayer?.state;
+	$: cardAttr = cardPlayer?.attributes;
+	$: card_media_artist = cardAttr?.media_artist;
+	$: card_media_title = cardAttr?.media_title;
+	$: card_app_id = cardAttr?.app_id;
+	$: card_entity_picture = cardAttr?.entity_picture;
+
+	// 向后兼容变量（用于模板和其他函数）
 	$: current_media_player = getCurrent(sel?.media_players, $states, pauseExpired, timeout);
 	$: currentEntityId = current_media_player?.entity_id;
 	$: currentState = current_media_player?.state;
@@ -58,16 +125,26 @@
 	$: timeout = sel?.timeout ?? 900;
 	$: if (currentEntityId || currentState || timeout || sel?.show_timeout) handlePaused(false);
 
+	// 判断当前卡片是否活跃（正在播放或暂停未过期）
+	$: cardActive = currentCard?.type === 'player' && 
+		(cardState === 'playing' || (cardState === 'paused' && !pauseExpired));
+	
+	// 向后兼容的 active 变量（任何播放器活跃时为 true）
 	$: active = currentState === 'playing' || (currentState === 'paused' && !pauseExpired);
 
-	// set background image
-	$: if ($youtubeAddon && app_id === 'com.google.ios.youtube' && active) {
-		youtubeThumbnail(media_artist, media_title);
-	} else if (entity_picture && active) {
-		entityPicture();
-	} else if (!entity_picture && active) {
-		noEntityPicture();
+	// set background image based on current card
+	$: if (currentCard?.type === 'player') {
+		// 媒体播放器卡片
+		if ($youtubeAddon && card_app_id === 'com.google.ios.youtube' && cardActive) {
+			youtubeThumbnail(card_media_artist, card_media_title);
+		} else if (card_entity_picture && cardActive) {
+			backgroundImage = `url("${card_entity_picture}")`;
+		} else {
+			// 播放器空闲时，不显示背景图片（使用设备大图标代替）
+			backgroundImage = undefined;
+		}
 	} else {
+		// Plex recently added 卡片
 		nothingPlaying(fanart, poster, entity_entity_picture);
 	}
 
@@ -245,7 +322,53 @@
 		}
 	}
 
+	// swipe handlers - 在编辑模式下禁用，多个卡片时启用
+	function handlePointerDown(event: PointerEvent) {
+		if ($editMode || swipeCards.length <= 1) return;
+		swipeStartX = event.clientX;
+		swipeStartY = event.clientY;
+		swipeDeltaX = 0;
+		isSwiping = false;
+	}
+
+	function handlePointerMove(event: PointerEvent) {
+		if ($editMode || swipeCards.length <= 1) return;
+		if (swipeStartX === 0 && swipeStartY === 0) return;
+		const dx = event.clientX - swipeStartX;
+		const dy = event.clientY - swipeStartY;
+		// 如果水平移动大于垂直移动，认为是滑动
+		if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+			swipeDeltaX = dx;
+			isSwiping = true;
+		}
+	}
+
+	function handlePointerUp() {
+		if ($editMode || swipeCards.length <= 1) {
+			swipeStartX = 0;
+			swipeStartY = 0;
+			return;
+		}
+		if (Math.abs(swipeDeltaX) > SWIPE_THRESHOLD) {
+			if (swipeDeltaX < 0) {
+				// 向左滑 → 下一个
+				currentIndex = (currentIndex + 1) % swipeCards.length;
+			} else {
+				// 向右滑 → 上一个
+				currentIndex = (currentIndex - 1 + swipeCards.length) % swipeCards.length;
+			}
+		}
+		swipeStartX = 0;
+		swipeStartY = 0;
+		swipeDeltaX = 0;
+	}
+
 	async function handleClick() {
+		// 如果正在滑动，不触发点击
+		if (isSwiping) {
+			isSwiping = false;
+			return;
+		}
 		if ($modals?.length > 0) return;
 
 		if ($editMode) {
@@ -286,7 +409,12 @@
 	tabindex="0"
 	role="button"
 	on:click={handleClick}
+	on:pointerdown={handlePointerDown}
+	on:pointermove={handlePointerMove}
+	on:pointerup={handlePointerUp}
+	on:pointerleave={handlePointerUp}
 	class="container"
+	class:swipeable={!$editMode && swipeCards.length > 1}
 	style:background-image={backgroundImage}
 	style:height="calc({$itemHeight}px * 4 + 0.4rem * 3)"
 	style:cursor={$editMode || !active ? 'unset' : 'pointer'}
@@ -358,24 +486,23 @@
 		</div>
 
 		<div class="right">
-			{#if active}
-				<!-- activePlayer -->
+			{#if currentCard?.type === 'player' && cardActive}
+				<!-- 当前卡片是活跃播放器 -->
 
 				<div class="name">
-					{getName(undefined, current_media_player)}
+					{currentCard?.name || getName(undefined, cardPlayer)}
 				</div>
 
 				<div class="state">
 					<div class="measure" bind:clientWidth={contentWidth}>
-						<!-- snippet -->
-						{#if media_artist && media_title}
-							{media_artist} - {media_title}
-						{:else if media_artist && !media_title}
-							{media_artist}
-						{:else if !media_artist && media_title}
-							{media_title}
+						{#if card_media_artist && card_media_title}
+							{card_media_artist} - {card_media_title}
+						{:else if card_media_artist && !card_media_title}
+							{card_media_artist}
+						{:else if !card_media_artist && card_media_title}
+							{card_media_title}
 						{:else}
-							<StateLogic entity_id={current_media_player?.entity_id} selected={undefined} />
+							<StateLogic entity_id={cardPlayer?.entity_id} selected={undefined} />
 						{/if}
 					</div>
 
@@ -385,43 +512,61 @@
 								loading
 							{:then Marquee}
 								<svelte:component this={Marquee.default}>
-									<!-- snippet -->
-									{#if media_artist && media_title}
-										{media_artist} - {media_title}
-									{:else if media_artist && !media_title}
-										{media_artist}
-									{:else if !media_artist && media_title}
-										{media_title}
+									{#if card_media_artist && card_media_title}
+										{card_media_artist} - {card_media_title}
+									{:else if card_media_artist && !card_media_title}
+										{card_media_artist}
+									{:else if !card_media_artist && card_media_title}
+										{card_media_title}
 									{:else}
-										<StateLogic entity_id={current_media_player?.entity_id} selected={undefined} />
+										<StateLogic entity_id={cardPlayer?.entity_id} selected={undefined} />
 									{/if}
 									{@html '&nbsp;'.repeat(4)}
 								</svelte:component>
 							{/await}
 						{:else}
-							<!-- snippet -->
-							{#if media_artist && media_title}
-								{media_artist} - {media_title}
-							{:else if media_artist && !media_title}
-								{media_artist}
-							{:else if !media_artist && media_title}
-								{media_title}
+							{#if card_media_artist && card_media_title}
+								{card_media_artist} - {card_media_title}
+							{:else if card_media_artist && !card_media_title}
+								{card_media_artist}
+							{:else if !card_media_artist && card_media_title}
+								{card_media_title}
 							{:else}
-								<StateLogic entity_id={current_media_player?.entity_id} selected={undefined} />
+								<StateLogic entity_id={cardPlayer?.entity_id} selected={undefined} />
 							{/if}
 						{/if}
 					</div>
 				</div>
+			{:else if currentCard?.type === 'player' && !cardActive}
+				<!-- 当前卡片是空闲播放器 - 显示设备 logo/商品图 -->
+
+				<div class="idle-container">
+					{#if card_entity_picture}
+						<!-- 有设备图片时显示设备图片 -->
+						<div 
+							class="idle-product"
+							style="background-image: url('{card_entity_picture}')"
+						></div>
+					{:else}
+						<!-- 无设备图片时显示图标 -->
+						<div class="idle-icon">
+							<ComputeIcon entity_id={cardPlayer?.entity_id || ''} skipEntityPicture={true} />
+						</div>
+					{/if}
+					
+					<div class="idle-name">
+						{currentCard?.name || $lang('idle')}
+					</div>
+				</div>
 			{:else}
-				<!-- nothing_playing -->
+				<!-- Plex recently added 卡片 -->
 
 				<div class="name">
-					{sel?.name || getName(undefined, entity) || $lang('nothing_playing')}
+					{currentCard?.name || sel?.name || getName(undefined, entity) || $lang('nothing_playing')}
 				</div>
 
 				<div class="state">
 					<div class="measure" bind:clientWidth={contentWidth}>
-						<!-- snippet -->
 						{#if entity_data?.title}
 							{entity_data?.title}
 
@@ -470,6 +615,23 @@
 			{/if}
 		</div>
 	</div>
+
+	<!-- swipe indicators - 显示当前卡片和总数 -->
+	{#if !$editMode && swipeCards.length > 1}
+		<div class="indicators">
+			<span class="card-label">{currentCard?.name || 'Media'}</span>
+			<div class="dots">
+				{#each swipeCards as _, i}
+					<button
+						class="dot"
+						class:active-dot={i === currentIndex}
+						on:click|stopPropagation={() => (currentIndex = i)}
+						aria-label="Card {i + 1}"
+					></button>
+				{/each}
+			</div>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -577,6 +739,105 @@
 		grid-auto-flow: row;
 		grid-template-areas: 'left right';
 		border-radius: 0 0 0.65rem 0.65rem;
+	}
+
+	.swipeable {
+		cursor: grab;
+	}
+
+	.swipeable:active {
+		cursor: grabbing;
+	}
+
+	.indicators {
+		position: absolute;
+		bottom: 0.5rem;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.25rem;
+		z-index: 2;
+	}
+
+	.card-label {
+		font-size: 0.65rem;
+		color: rgba(255, 255, 255, 0.7);
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		max-width: 150px;
+	}
+
+	.dots {
+		display: flex;
+		gap: 0.35rem;
+	}
+
+	.dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		border: none;
+		padding: 0;
+		background: rgba(255, 255, 255, 0.35);
+		cursor: pointer;
+		transition: all 0.2s ease;
+	}
+
+	.dot:hover {
+		background: rgba(255, 255, 255, 0.6);
+	}
+
+	.active-dot {
+		background: rgba(255, 255, 255, 0.9);
+		width: 16px;
+		border-radius: 3px;
+	}
+
+	.idle-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+	}
+
+	.idle-icon {
+		width: 5rem;
+		height: 5rem;
+		opacity: 0.5;
+		filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.idle-product {
+		width: 8rem;
+		height: 8rem;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		border-radius: 1rem;
+		opacity: 0.8;
+		filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.5));
+	}
+
+	.idle-name {
+		font-size: 1.2rem;
+		font-weight: 500;
+		color: rgba(255, 255, 255, 0.9);
+		text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+		white-space: nowrap;
+		text-align: center;
 	}
 
 	/* Phone and Tablet (portrait) */

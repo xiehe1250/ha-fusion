@@ -1,7 +1,7 @@
 <script lang="ts">
 	// eventually merge with SidebarItemConfig.svelte...
 
-	import { dashboard, record, lang, motion, ripple, states, demo } from '$lib/Stores';
+	import { dashboard, record, lang, motion, ripple, states, demo, connection } from '$lib/Stores';
 	import { openModal, closeModal } from 'svelte-modals';
 	import { onMount } from 'svelte';
 	import { flip } from 'svelte/animate';
@@ -10,17 +10,19 @@
 	import {
 		getCameraEntity,
 		getSensorEntity,
-		getMediaPlayerEntity
+		getMediaPlayerEntity,
+		getGraphEntity
 	} from '$lib/Modal/getRandomEntity';
 
 	import Button from '$lib/Main/Button.svelte';
+	import HassButton from '$lib/Main/HassButton.svelte';
 	import Camera from '$lib/Main/Camera.svelte';
 	import ConditionalMedia from '$lib/Main/ConditionalMedia.svelte';
 	import Empty from '$lib/Main/Empty.svelte';
 	import Template from '$lib/Main/Template.svelte';
 	import Bar from '$lib/Main/Bar.svelte';
-	import Sensor from '$lib/Main/Sensor.svelte';
 	import ConfigButtons from '$lib/Modal/ConfigButtons.svelte';
+	import Graph from '$lib/Main/Graph.svelte';
 	import Ripple from 'svelte-ripple';
 	import PictureElements from '$lib/Main/PictureElements.svelte';
 
@@ -34,6 +36,7 @@
 	if (!$demo.camera) $demo.camera = getCameraEntity($states);
 	if (!$demo.sensor) $demo.sensor = getSensorEntity($states);
 	if (!$demo.media_player) $demo.media_player = getMediaPlayerEntity($states);
+	if (!$demo.graph) getGraphEntity($states, connection, (id: string | undefined) => ($demo.graph = id));
 
 	let loadIcons: (typeof import('@iconify/svelte'))['loadIcons'];
 	let icons: Record<string, string>;
@@ -91,6 +94,15 @@
 			}
 		},
 		{
+			id: 'hass_button',
+			type: 'Hass Button',
+			component: HassButton,
+			props: {
+				demo: $demo.sensor,
+				sel
+			}
+		},
+		{
 			id: 'camera',
 			type: $lang('camera'),
 			component: Camera,
@@ -142,11 +154,11 @@
 			}
 		},
 		{
-			id: 'sensor',
-			type: $lang('sensor'),
-			component: Sensor,
+			id: 'graph',
+			type: $lang('graph'),
+			component: Graph,
 			props: {
-				sel: { entity_id: $demo.sensor, id: -1 }
+				sel: { entity_id: $demo.graph, id: -1 }
 			}
 		}
 	];
@@ -164,6 +176,12 @@
 		switch (sel?.type) {
 			case 'button':
 				openModal(() => import('$lib/Modal/ButtonConfig.svelte'), {
+					demo: $demo.sensor,
+					sel
+				});
+				break;
+			case 'hass_button':
+				openModal(() => import('$lib/Modal/HassButtonConfig.svelte'), {
 					demo: $demo.sensor,
 					sel
 				});
@@ -201,6 +219,9 @@
 				break;
 			case 'sensor':
 				openModal(() => import('$lib/Modal/SensorConfig.svelte'), { sel });
+				break;
+			case 'graph':
+				openModal(() => import('$lib/Modal/GraphConfig.svelte'), { sel });
 				break;
 			default:
 				openModal(() => import('$lib/Modal/MainItemConfig.svelte'), { sel });
@@ -264,7 +285,11 @@
 						{type}
 					</div>
 
-					<div class="preview" class:camera={id === 'camera'} class:button={id === 'button'}>
+					<div
+						class="preview"
+						class:camera={id === 'camera'}
+						class:button={['button', 'hass_button'].includes(id)}
+					>
 						<svelte:component this={component} {...props} />
 					</div>
 				</button>

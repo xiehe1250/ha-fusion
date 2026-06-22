@@ -93,6 +93,34 @@
 			</button>
 		</div>
 
+		<h2>Grid Size</h2>
+
+		<div class="button-container">
+			<button
+				class:selected={!sel?.grid_span || sel?.grid_span === 4}
+				on:click={() => set('grid_span', 4)}
+				use:Ripple={$ripple}
+			>
+				Large
+			</button>
+
+			<button
+				class:selected={sel?.grid_span === 2}
+				on:click={() => set('grid_span', 2)}
+				use:Ripple={$ripple}
+			>
+				Medium
+			</button>
+
+			<button
+				class:selected={sel?.grid_span === 1}
+				on:click={() => set('grid_span', 1)}
+				use:Ripple={$ripple}
+			>
+				Small
+			</button>
+		</div>
+
 		<!-- only show if it's a sidebar item -->
 		{#if $dashboard?.sidebar?.find((item) => item?.id === sel?.id)}
 			<h2>{$lang('mobile')}</h2>

@@ -5,6 +5,7 @@
 
 	import { connection, lang, motion, selectedLanguage, ripple } from '$lib/Stores';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 	import { fade } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import Ripple from 'svelte-ripple';
@@ -17,27 +18,26 @@
 	let response: string | undefined;
 
 	async function processConversation(input: string) {
-		connection.subscribe(async (conn: any) => {
-			try {
-				if (conn?.sendMessagePromise) {
-					const res: any = await conn.sendMessagePromise({
-						type: 'conversation/process',
-						text: input,
-						language: $selectedLanguage
-					});
+		const conn = get(connection) as any;
+		try {
+			if (conn?.sendMessagePromise) {
+				const res: any = await conn.sendMessagePromise({
+					type: 'conversation/process',
+					text: input,
+					language: $selectedLanguage
+				});
 
-					response = res?.response?.speech?.plain?.speech;
+				response = res?.response?.speech?.plain?.speech;
 
-					setTimeout(() => {
-						final = '';
-						interim = '';
-						response = undefined;
-					}, 2000);
-				}
-			} catch (error) {
-				console.error('Error:', error);
+				setTimeout(() => {
+					final = '';
+					interim = '';
+					response = undefined;
+				}, 2000);
 			}
-		});
+		} catch (error) {
+			console.error('Error:', error);
+		}
 	}
 
 	onMount(() => {
