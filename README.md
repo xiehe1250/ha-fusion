@@ -4,6 +4,11 @@ A modern, easy-to-use and performant custom [Home Assistant](https://www.home-as
 
 **This is a customized and optimized fork of the original ha-fusion project.**
 
+<p align="center">
+  <img src="./static/preview1.png" width="48%" />
+  <img src="./static/preview2.png" width="48%" />
+</p>
+
 ---
 
 ## ✨ Features & Enhancements in this Fork
