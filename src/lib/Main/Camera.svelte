@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { editMode, itemHeight, states } from '$lib/Stores';
+	import { editMode, states } from '$lib/Stores';
 	import { openModal } from 'svelte-modals';
 	import Loader from '$lib/Components/Loader.svelte';
 	import { writable } from 'svelte/store';
@@ -21,8 +21,6 @@
 	$: frontend_stream_type = entity?.attributes?.frontend_stream_type;
 	$: size = sel?.size === 'contain' ? 'contain' : 'cover';
 	$: gridSpan = sel?.grid_span || 4;
-	$: cameraHeight = responsive ? '100%' : `calc(${$itemHeight}px * ${gridSpan} + 0.4rem * ${Math.max(0, gridSpan - 1)})`;
-	$: cameraWidth = responsive ? '100%' : `calc(7.25rem * ${gridSpan} + 0.4rem * ${Math.max(0, gridSpan - 1)})`;
 
 	$: props = {
 		entity,
@@ -69,8 +67,6 @@
 <button
 	style:background-size={size}
 	style:cursor={$editMode || responsive ? 'unset' : 'pointer'}
-	style:height={cameraHeight}
-	style:width={cameraWidth}
 	on:click={handleClick}
 >
 	{#if loaderVisible && !$editMode}
@@ -142,6 +138,7 @@
 		background-color: rgba(0, 0, 0, 0.2);
 		border-radius: 0.6rem;
 		height: 100%;
+		width: 100%;
 		position: relative;
 		color: white;
 		overflow: hidden;

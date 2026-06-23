@@ -109,7 +109,7 @@
 	#drawer {
 		height: 4.75rem;
 		width: 100vw;
-		padding: 1rem 2rem;
+		padding: 1rem clamp(1rem, 2vw, 2rem);
 		background-color: var(--theme-colors-sidebar-background);
 		border-bottom: var(--theme-colors-sidebar-border);
 	}

@@ -15,7 +15,9 @@
 	export let sel: any;
 
 	let debounce = false;
-	let timeout: ReturnType<typeof setTimeout>;
+	let timeout: ReturnType<typeof setTimeout> = undefined as unknown as ReturnType<
+		typeof setTimeout
+	>;
 	let rangeValue = 0;
 
 	let groupSel: string | undefined;

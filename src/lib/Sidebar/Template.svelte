@@ -103,6 +103,9 @@
 	#markdown {
 		position: relative;
 		word-wrap: break-word;
+		overflow-wrap: anywhere;
+		max-width: 100%;
+		min-width: 0;
 		padding: var(--theme-sidebar-item-padding);
 		text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
 	}

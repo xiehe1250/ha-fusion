@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { editMode, motion, record, dragging, itemHeight, states, dashboard } from '$lib/Stores';
+	import { editMode, motion, record, dragging, states, dashboard } from '$lib/Stores';
 	import { onMount, tick } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import { dndzone, TRIGGERS, SHADOW_ITEM_MARKER_PROPERTY_NAME } from 'svelte-dnd-action';
@@ -20,7 +20,7 @@
 	let isDraggingScenes = false;
 	let skipTransformElement = false;
 
-	const stackHeight = $itemHeight * 1.65;
+	const stackHeight = 'clamp(5.5rem, 8vw, 6.5rem)';
 
 	let mounted = false;
 	onMount(() => (mounted = true));
@@ -171,7 +171,7 @@
 
 	function sectionStyles(sectionType: string, editMode: boolean, motion: number, empty: boolean) {
 		return `
-			min-height: ${sectionType === 'scenes' ? '4.8rem' : `${$itemHeight}px`};
+			min-height: ${sectionType === 'scenes' ? '4.8rem' : 'clamp(3.5rem, 5vw, 4rem)'};
 			background-color: ${empty ? 'rgba(255, 190, 10, 0.25)' : sectionType === 'scenes' ? 'rgba(0, 0, 0, 0.125)' : 'transparent'};
 			outline: ${empty ? '2px dashed #ffc107' : 'none'};
 			transition: ${
@@ -181,18 +181,30 @@
 	}
 
 	function itemStyles(type: string, gridSpan?: number) {
-		const large = ['conditional_media', 'picture_elements', 'template', 'bar', 'graph'];
+		const large = [
+			'conditional_media',
+			'picture_elements',
+			'template',
+			'bar',
+			'graph',
+			'map',
+			'sensor_group'
+		];
 		const hassSmall = ['hass_button'];
 		let colSpan: number, rowSpan: number;
 		if (type === 'camera') {
 			const span = gridSpan || 4;
-			colSpan = span; rowSpan = span;
+			colSpan = span;
+			rowSpan = span;
 		} else if (hassSmall.includes(type)) {
-			colSpan = 1; rowSpan = 1;
+			colSpan = 1;
+			rowSpan = 1;
 		} else if (large.includes(type)) {
-			colSpan = 4; rowSpan = 4;
+			colSpan = 4;
+			rowSpan = 4;
 		} else {
-			colSpan = 2; rowSpan = 1;
+			colSpan = 2;
+			rowSpan = 1;
 		}
 		return `
 			grid-column: span ${colSpan};
@@ -307,7 +319,7 @@
 
 				<div
 					class="horizontal-stack"
-					style:min-height="{stackHeight}px"
+					style:min-height={stackHeight}
 					style:outline="2px dashed {$editMode ? '#ffc008' : 'transparent'}"
 					style:transition="min-height {$motion}ms ease, outline {$motion / 2}ms ease"
 					data-is-dnd-shadow-item-hint={section?.[SHADOW_ITEM_MARKER_PROPERTY_NAME]}
@@ -429,9 +441,9 @@
 <style>
 	main {
 		grid-area: main;
-		padding: 0 2rem 2rem;
+		padding: 0 clamp(1rem, 2vw, 2rem) clamp(1rem, 2vw, 2rem);
 		display: grid;
-		gap: 1.5rem;
+		gap: clamp(0.75rem, 1.5vw, 1.5rem);
 		outline: transparent;
 		align-content: start;
 	}
@@ -445,7 +457,7 @@
 		display: grid;
 		grid-auto-flow: column;
 		grid-auto-columns: 1fr;
-		gap: 2rem;
+		gap: clamp(0.75rem, 1.5vw, 2rem);
 		border-radius: 0.65rem;
 		outline-offset: 3px;
 	}
@@ -454,9 +466,9 @@
 		border-radius: 0.6rem;
 		outline-offset: -2px;
 		display: grid;
-		grid-template-columns: repeat(auto-fill, 7.25rem);
+		grid-template-columns: repeat(auto-fill, minmax(clamp(5rem, 8vw, 7.25rem), 1fr));
 		grid-auto-rows: min-content;
-		gap: 0.4rem;
+		gap: clamp(0.2rem, 0.4vw, 0.4rem);
 		border-radius: 0.6rem;
 		height: 100%;
 	}
@@ -482,7 +494,6 @@
 			flex-wrap: wrap;
 		}
 	}
-
 
 	.scenes {
 		display: grid;

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { KonvaViewer } from '$lib/Modal/PictureElements/konvaViewer';
 	import { onDestroy, onMount, tick } from 'svelte';
-	import { dashboard, editMode, itemHeight } from '$lib/Stores';
+	import { dashboard, editMode } from '$lib/Stores';
 	import { openModal } from 'svelte-modals';
 	import type { Dashboard } from '$lib/Types';
 	import { loadIcons } from '@iconify/svelte';
@@ -86,7 +86,8 @@
 	on:click={handleClick}
 	bind:this={canvas}
 	style:cursor={$editMode ? 'unset' : 'default'}
-	style:height="calc({$itemHeight}px * 4 + 0.4rem * 3)"
+	style:height="100%"
+	style:min-height="clamp(14rem, 20vw, 20rem)"
 	style:background-color={!sel?.elements?.length
 		? 'var(--theme-button-background-color-off)'
 		: 'transparent'}
@@ -94,7 +95,7 @@
 
 <style>
 	div {
-		width: calc(14.5rem * 2 + 0.4rem);
+		width: 100%;
 		border-radius: 1rem;
 		border-radius: 0.6rem;
 		overflow: hidden;

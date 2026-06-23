@@ -434,10 +434,13 @@
 		padding-bottom: 1.4rem !important;
 		background-color: var(--theme-colors-sidebar-background);
 		border-right: var(--theme-colors-sidebar-border);
+		min-width: 0;
+		overflow: hidden;
 	}
 
 	div {
 		width: 100%;
+		min-width: 0;
 	}
 
 	button {
@@ -450,6 +453,7 @@
 		cursor: inherit;
 		font-size: inherit;
 		width: 100%;
+		min-width: 0;
 	}
 
 	section {
@@ -463,5 +467,15 @@
 	.sidebar_edit_mode {
 		transition: height 200ms ease;
 		display: flex;
+	}
+
+	/* On iPad Air and similar (≤1024px), shrink sidebar text and icons
+	   by overriding the theme CSS variables locally on aside.
+	   Components using height="none" on <Icon> inherit font-size automatically. */
+	@media (max-width: 1024px) {
+		aside {
+			--theme-sidebar-font-size: 0.82rem;
+			--theme-sizes-sidebar-time: clamp(1.8rem, 3.5vw, 2.6rem);
+		}
 	}
 </style>

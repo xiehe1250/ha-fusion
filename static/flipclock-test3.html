@@ -1,159 +1,312 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>FlipClock v3</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&display=swap" rel="stylesheet">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #1a1a2e;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  min-height: 100vh; font-family: 'Oswald', system-ui, sans-serif; font-weight: 500;
-  gap: 60px; color: #fff;
-}
-h3 { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 16px; font-weight: 400; text-align: center; }
+	<head>
+		<meta charset="utf-8" />
+		<title>FlipClock v3</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			body {
+				background: #1a1a2e;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				font-family: 'Oswald', system-ui, sans-serif;
+				font-weight: 500;
+				gap: 60px;
+				color: #fff;
+			}
+			h3 {
+				color: rgba(255, 255, 255, 0.4);
+				font-size: 13px;
+				margin-bottom: 16px;
+				font-weight: 400;
+				text-align: center;
+			}
 
-.clock {
-  display: flex; align-items: center; justify-content: center;
-  gap: 18px; padding: 10px 14px; background: rgba(255,255,255,0.05); border-radius: 16px;
-  font-size: 32px; /* bigger base */
-}
-.dg { display: flex; gap: 8px; }
-.sep { font-size: 1.5em; color: rgba(255,255,255,0.35); }
+			.clock {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 18px;
+				padding: 10px 14px;
+				background: rgba(255, 255, 255, 0.05);
+				border-radius: 16px;
+				font-size: 32px; /* bigger base */
+			}
+			.dg {
+				display: flex;
+				gap: 8px;
+			}
+			.sep {
+				font-size: 1.5em;
+				color: rgba(255, 255, 255, 0.35);
+			}
 
-/* ====== Shared digit style ====== */
-.fd {
-  position: relative; width: 1.8em; height: 2.6em; perspective: 300px;
-}
+			/* ====== Shared digit style ====== */
+			.fd {
+				position: relative;
+				width: 1.8em;
+				height: 2.6em;
+				perspective: 300px;
+			}
 
-/* ====== E: clip-path ====== */
-.e .h {
-  position: absolute; left: 0; width: 100%; height: 100%; overflow: hidden;
-}
-.e .h span {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; height: 100%; font-size: 1.7em; color: #fff;
-}
-.e .ht {
-  clip-path: inset(0 0 50% 0);
-  background: rgb(38, 38, 42);
-  border-radius: 0.15em;
-}
-.e .hb {
-  clip-path: inset(50% 0 0 0);
-  background: rgb(32, 32, 36);
-  border-radius: 0.15em;
-}
-.e .fd::after {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  height: 1.5px; background: rgba(0,0,0,0.7); z-index: 5;
-}
+			/* ====== E: clip-path ====== */
+			.e .h {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			.e .h span {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				height: 100%;
+				font-size: 1.7em;
+				color: #fff;
+			}
+			.e .ht {
+				clip-path: inset(0 0 50% 0);
+				background: rgb(38, 38, 42);
+				border-radius: 0.15em;
+			}
+			.e .hb {
+				clip-path: inset(50% 0 0 0);
+				background: rgb(32, 32, 36);
+				border-radius: 0.15em;
+			}
+			.e .fd::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 50%;
+				height: 1.5px;
+				background: rgba(0, 0, 0, 0.7);
+				z-index: 5;
+			}
 
-/* ====== F: gradient (simplest) ====== */
-.f .fd {
-  background: linear-gradient(to bottom, rgb(38, 38, 42) 50%, rgb(32, 32, 36) 50%);
-  border-radius: 0.15em;
-}
-.f .fd::after {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  height: 1.5px; background: rgba(0,0,0,0.7); z-index: 2;
-}
-.f .txt {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.7em; color: #fff; z-index: 1;
-}
+			/* ====== F: gradient (simplest) ====== */
+			.f .fd {
+				background: linear-gradient(to bottom, rgb(38, 38, 42) 50%, rgb(32, 32, 36) 50%);
+				border-radius: 0.15em;
+			}
+			.f .fd::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 50%;
+				height: 1.5px;
+				background: rgba(0, 0, 0, 0.7);
+				z-index: 2;
+			}
+			.f .txt {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.7em;
+				color: #fff;
+				z-index: 1;
+			}
 
-/* ====== G: clip-path + flip animation ====== */
-.g .fd { perspective: 300px; }
-.g .h { position: absolute; left: 0; width: 100%; height: 100%; overflow: hidden; }
-.g .h span {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; height: 100%; font-size: 1.7em; color: #fff;
-}
-.g .ht { clip-path: inset(0 0 50% 0); background: rgb(38,38,42); border-radius: 0.15em; }
-.g .hb { clip-path: inset(50% 0 0 0); background: rgb(32,32,36); border-radius: 0.15em; }
-.g .fd::after {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  height: 1.5px; background: rgba(0,0,0,0.7); z-index: 5;
-}
-/* Flip overlay flaps */
-.g .fl { position: absolute; left: 0; width: 100%; height: 100%; overflow: hidden; backface-visibility: hidden; z-index: 10; }
-.g .fl span {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; height: 100%; font-size: 1.7em; color: #fff;
-}
-.g .ft { clip-path: inset(0 0 50% 0); background: rgb(38,38,42); border-radius: 0.15em; transform-origin: center bottom; animation: foldDown 0.3s ease-in forwards; }
-.g .fb { clip-path: inset(50% 0 0 0); background: rgb(32,32,36); border-radius: 0.15em; transform-origin: center top; transform: rotateX(90deg); animation: unfoldUp 0.3s ease-out 0.12s forwards; }
-@keyframes foldDown { from { transform: rotateX(0deg); } to { transform: rotateX(-90deg); } }
-@keyframes unfoldUp { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
+			/* ====== G: clip-path + flip animation ====== */
+			.g .fd {
+				perspective: 300px;
+			}
+			.g .h {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			.g .h span {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				height: 100%;
+				font-size: 1.7em;
+				color: #fff;
+			}
+			.g .ht {
+				clip-path: inset(0 0 50% 0);
+				background: rgb(38, 38, 42);
+				border-radius: 0.15em;
+			}
+			.g .hb {
+				clip-path: inset(50% 0 0 0);
+				background: rgb(32, 32, 36);
+				border-radius: 0.15em;
+			}
+			.g .fd::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 50%;
+				height: 1.5px;
+				background: rgba(0, 0, 0, 0.7);
+				z-index: 5;
+			}
+			/* Flip overlay flaps */
+			.g .fl {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				backface-visibility: hidden;
+				z-index: 10;
+			}
+			.g .fl span {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				height: 100%;
+				font-size: 1.7em;
+				color: #fff;
+			}
+			.g .ft {
+				clip-path: inset(0 0 50% 0);
+				background: rgb(38, 38, 42);
+				border-radius: 0.15em;
+				transform-origin: center bottom;
+				animation: foldDown 0.3s ease-in forwards;
+			}
+			.g .fb {
+				clip-path: inset(50% 0 0 0);
+				background: rgb(32, 32, 36);
+				border-radius: 0.15em;
+				transform-origin: center top;
+				transform: rotateX(90deg);
+				animation: unfoldUp 0.3s ease-out 0.12s forwards;
+			}
+			@keyframes foldDown {
+				from {
+					transform: rotateX(0deg);
+				}
+				to {
+					transform: rotateX(-90deg);
+				}
+			}
+			@keyframes unfoldUp {
+				from {
+					transform: rotateX(90deg);
+				}
+				to {
+					transform: rotateX(0deg);
+				}
+			}
 
-/* Animate every 2 seconds */
-.g .flip-demo .ft, .g .flip-demo .fb { animation-iteration-count: infinite; animation-duration: 2s; }
-</style>
-</head>
-<body>
+			/* Animate every 2 seconds */
+			.g .flip-demo .ft,
+			.g .flip-demo .fb {
+				animation-iteration-count: infinite;
+				animation-duration: 2s;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<h3>E: clip-path（上下色差小）</h3>
+			<div class="clock e">
+				<div class="dg">
+					<div class="fd">
+						<div class="h ht"><span>2</span></div>
+						<div class="h hb"><span>2</span></div>
+					</div>
+					<div class="fd">
+						<div class="h ht"><span>1</span></div>
+						<div class="h hb"><span>1</span></div>
+					</div>
+				</div>
+				<div class="sep">:</div>
+				<div class="dg">
+					<div class="fd">
+						<div class="h ht"><span>0</span></div>
+						<div class="h hb"><span>0</span></div>
+					</div>
+					<div class="fd">
+						<div class="h ht"><span>5</span></div>
+						<div class="h hb"><span>5</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div>
-  <h3>E: clip-path（上下色差小）</h3>
-  <div class="clock e">
-    <div class="dg">
-      <div class="fd"><div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div></div>
-      <div class="fd"><div class="h ht"><span>1</span></div><div class="h hb"><span>1</span></div></div>
-    </div>
-    <div class="sep">:</div>
-    <div class="dg">
-      <div class="fd"><div class="h ht"><span>0</span></div><div class="h hb"><span>0</span></div></div>
-      <div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div>
-    </div>
-  </div>
-</div>
+		<div>
+			<h3>F: gradient background（最简洁）</h3>
+			<div class="clock f">
+				<div class="dg">
+					<div class="fd"><span class="txt">2</span></div>
+					<div class="fd"><span class="txt">1</span></div>
+				</div>
+				<div class="sep">:</div>
+				<div class="dg">
+					<div class="fd"><span class="txt">0</span></div>
+					<div class="fd"><span class="txt">5</span></div>
+				</div>
+			</div>
+		</div>
 
-<div>
-  <h3>F: gradient background（最简洁）</h3>
-  <div class="clock f">
-    <div class="dg">
-      <div class="fd"><span class="txt">2</span></div>
-      <div class="fd"><span class="txt">1</span></div>
-    </div>
-    <div class="sep">:</div>
-    <div class="dg">
-      <div class="fd"><span class="txt">0</span></div>
-      <div class="fd"><span class="txt">5</span></div>
-    </div>
-  </div>
-</div>
+		<div>
+			<h3>G: clip-path + 翻页动画（点击看效果）</h3>
+			<div class="clock g" onclick="triggerFlip(this)">
+				<div class="dg">
+					<div class="fd flip-demo">
+						<div class="h ht"><span>2</span></div>
+						<div class="h hb"><span>2</span></div>
+						<div class="fl ft"><span>2</span></div>
+						<div class="fl fb"><span>3</span></div>
+					</div>
+					<div class="fd">
+						<div class="h ht"><span>1</span></div>
+						<div class="h hb"><span>1</span></div>
+					</div>
+				</div>
+				<div class="sep">:</div>
+				<div class="dg">
+					<div class="fd">
+						<div class="h ht"><span>0</span></div>
+						<div class="h hb"><span>0</span></div>
+					</div>
+					<div class="fd">
+						<div class="h ht"><span>5</span></div>
+						<div class="h hb"><span>5</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div>
-  <h3>G: clip-path + 翻页动画（点击看效果）</h3>
-  <div class="clock g" onclick="triggerFlip(this)">
-    <div class="dg">
-      <div class="fd flip-demo">
-        <div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div>
-        <div class="fl ft"><span>2</span></div><div class="fl fb"><span>3</span></div>
-      </div>
-      <div class="fd">
-        <div class="h ht"><span>1</span></div><div class="h hb"><span>1</span></div>
-      </div>
-    </div>
-    <div class="sep">:</div>
-    <div class="dg">
-      <div class="fd"><div class="h ht"><span>0</span></div><div class="h hb"><span>0</span></div></div>
-      <div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div>
-    </div>
-  </div>
-</div>
-
-<script>
-function triggerFlip(el) {
-  const flaps = el.querySelectorAll('.fl');
-  flaps.forEach(f => {
-    f.style.animation = 'none';
-    f.offsetHeight; // reflow
-    f.style.animation = '';
-  });
-}
-</script>
-</body>
+		<script>
+			function triggerFlip(el) {
+				const flaps = el.querySelectorAll('.fl');
+				flaps.forEach((f) => {
+					f.style.animation = 'none';
+					f.offsetHeight; // reflow
+					f.style.animation = '';
+				});
+			}
+		</script>
+	</body>
 </html>

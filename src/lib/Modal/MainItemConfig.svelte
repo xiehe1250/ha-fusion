@@ -36,7 +36,8 @@
 	if (!$demo.camera) $demo.camera = getCameraEntity($states);
 	if (!$demo.sensor) $demo.sensor = getSensorEntity($states);
 	if (!$demo.media_player) $demo.media_player = getMediaPlayerEntity($states);
-	if (!$demo.graph) getGraphEntity($states, connection, (id: string | undefined) => ($demo.graph = id));
+	if (!$demo.graph)
+		getGraphEntity($states, connection, (id: string | undefined) => ($demo.graph = id));
 
 	let loadIcons: (typeof import('@iconify/svelte'))['loadIcons'];
 	let icons: Record<string, string>;
@@ -160,6 +161,20 @@
 			props: {
 				sel: { entity_id: $demo.graph, id: -1 }
 			}
+		},
+		{
+			id: 'map',
+			type: $lang('map') || 'Map',
+			component: undefined,
+			props: {},
+			style: { 'text-align': 'center' }
+		},
+		{
+			id: 'sensor_group',
+			type: $lang('sensor_group') || 'Sensor Group',
+			component: undefined,
+			props: {},
+			style: { 'text-align': 'center' }
 		}
 	];
 
@@ -222,6 +237,12 @@
 				break;
 			case 'graph':
 				openModal(() => import('$lib/Modal/GraphConfig.svelte'), { sel });
+				break;
+			case 'map':
+				openModal(() => import('$lib/Modal/MapCardConfig.svelte'), { sel });
+				break;
+			case 'sensor_group':
+				openModal(() => import('$lib/Modal/SensorGroupConfig.svelte'), { sel });
 				break;
 			default:
 				openModal(() => import('$lib/Modal/MainItemConfig.svelte'), { sel });

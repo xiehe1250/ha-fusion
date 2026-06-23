@@ -1,98 +1,179 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>FlipClock v2 Test</title>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&display=swap" rel="stylesheet">
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: #1a1a2e;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  font-family: 'Oswald', system-ui, sans-serif;
-  font-weight: 500;
-  gap: 60px;
-  color: #fff;
-}
-.test-case { text-align: center; }
-.test-case h3 { color: rgba(255,255,255,0.4); font-size: 13px; margin-bottom: 16px; font-weight: 400; }
+	<head>
+		<meta charset="utf-8" />
+		<title>FlipClock v2 Test</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+			body {
+				background: #1a1a2e;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				font-family: 'Oswald', system-ui, sans-serif;
+				font-weight: 500;
+				gap: 60px;
+				color: #fff;
+			}
+			.test-case {
+				text-align: center;
+			}
+			.test-case h3 {
+				color: rgba(255, 255, 255, 0.4);
+				font-size: 13px;
+				margin-bottom: 16px;
+				font-weight: 400;
+			}
 
-.clock {
-  display: flex; align-items: center; justify-content: center;
-  gap: 14px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 12px;
-  font-size: 22px;
-}
-.dg { display: flex; gap: 5px; }
-.sep { font-size: 1.6em; color: rgba(255,255,255,0.4); }
+			.clock {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 14px;
+				padding: 8px;
+				background: rgba(255, 255, 255, 0.05);
+				border-radius: 12px;
+				font-size: 22px;
+			}
+			.dg {
+				display: flex;
+				gap: 5px;
+			}
+			.sep {
+				font-size: 1.6em;
+				color: rgba(255, 255, 255, 0.4);
+			}
 
-/* ===== APPROACH: clip-path for pixel-perfect clipping ===== */
-.e .fd { position: relative; width: 60px; height: 80px; perspective: 300px; }
-.e .h  { position: absolute; left: 0; width: 100%; height: 100%; overflow: hidden; }
-.e .h span {
-  display: flex; align-items: center; justify-content: center;
-  width: 100%; height: 100%;
-  font-size: 1.8em; color: #fff;
-}
-.e .ht { clip-path: inset(0 0 50% 0); background: rgb(30,30,36); border-radius: 6px; }
-.e .hb { clip-path: inset(50% 0 0 0); background: rgb(40,40,46); border-radius: 6px; }
-/* Gap line via pseudo-element */
-.e .fd::after {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  height: 1.5px; background: rgba(0,0,0,0.6); z-index: 5;
-}
+			/* ===== APPROACH: clip-path for pixel-perfect clipping ===== */
+			.e .fd {
+				position: relative;
+				width: 60px;
+				height: 80px;
+				perspective: 300px;
+			}
+			.e .h {
+				position: absolute;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+			}
+			.e .h span {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 100%;
+				height: 100%;
+				font-size: 1.8em;
+				color: #fff;
+			}
+			.e .ht {
+				clip-path: inset(0 0 50% 0);
+				background: rgb(30, 30, 36);
+				border-radius: 6px;
+			}
+			.e .hb {
+				clip-path: inset(50% 0 0 0);
+				background: rgb(40, 40, 46);
+				border-radius: 6px;
+			}
+			/* Gap line via pseudo-element */
+			.e .fd::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 50%;
+				height: 1.5px;
+				background: rgba(0, 0, 0, 0.6);
+				z-index: 5;
+			}
 
-/* ===== APPROACH: Two full-height elements, background differs ===== */
-.f .fd {
-  position: relative; width: 60px; height: 80px; perspective: 300px;
-  background: linear-gradient(to bottom, rgb(30,30,36) 50%, rgb(40,40,46) 50%);
-  border-radius: 6px;
-}
-.f .fd::after {
-  content: ''; position: absolute; left: 0; right: 0; top: 50%;
-  height: 1.5px; background: rgba(0,0,0,0.6); z-index: 2;
-}
-.f .txt {
-  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.8em; color: #fff; z-index: 1;
-}
-</style>
-</head>
-<body>
+			/* ===== APPROACH: Two full-height elements, background differs ===== */
+			.f .fd {
+				position: relative;
+				width: 60px;
+				height: 80px;
+				perspective: 300px;
+				background: linear-gradient(to bottom, rgb(30, 30, 36) 50%, rgb(40, 40, 46) 50%);
+				border-radius: 6px;
+			}
+			.f .fd::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 50%;
+				height: 1.5px;
+				background: rgba(0, 0, 0, 0.6);
+				z-index: 2;
+			}
+			.f .txt {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 1.8em;
+				color: #fff;
+				z-index: 1;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="test-case">
+			<h3>E: clip-path approach (full height, clip halves)</h3>
+			<div class="clock e">
+				<div class="dg">
+					<div class="fd">
+						<div class="h ht"><span>2</span></div>
+						<div class="h hb"><span>2</span></div>
+					</div>
+					<div class="fd">
+						<div class="h ht"><span>1</span></div>
+						<div class="h hb"><span>1</span></div>
+					</div>
+				</div>
+				<div class="sep">:</div>
+				<div class="dg">
+					<div class="fd">
+						<div class="h ht"><span>0</span></div>
+						<div class="h hb"><span>0</span></div>
+					</div>
+					<div class="fd">
+						<div class="h ht"><span>5</span></div>
+						<div class="h hb"><span>5</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div class="test-case">
-  <h3>E: clip-path approach (full height, clip halves)</h3>
-  <div class="clock e">
-    <div class="dg">
-      <div class="fd"><div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div></div>
-      <div class="fd"><div class="h ht"><span>1</span></div><div class="h hb"><span>1</span></div></div>
-    </div>
-    <div class="sep">:</div>
-    <div class="dg">
-      <div class="fd"><div class="h ht"><span>0</span></div><div class="h hb"><span>0</span></div></div>
-      <div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div>
-    </div>
-  </div>
-</div>
-
-<div class="test-case">
-  <h3>F: Single element with gradient background (simplest)</h3>
-  <div class="clock f">
-    <div class="dg">
-      <div class="fd"><span class="txt">2</span></div>
-      <div class="fd"><span class="txt">1</span></div>
-    </div>
-    <div class="sep">:</div>
-    <div class="dg">
-      <div class="fd"><span class="txt">0</span></div>
-      <div class="fd"><span class="txt">5</span></div>
-    </div>
-  </div>
-</div>
-
-</body>
+		<div class="test-case">
+			<h3>F: Single element with gradient background (simplest)</h3>
+			<div class="clock f">
+				<div class="dg">
+					<div class="fd"><span class="txt">2</span></div>
+					<div class="fd"><span class="txt">1</span></div>
+				</div>
+				<div class="sep">:</div>
+				<div class="dg">
+					<div class="fd"><span class="txt">0</span></div>
+					<div class="fd"><span class="txt">5</span></div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>

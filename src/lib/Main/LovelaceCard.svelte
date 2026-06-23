@@ -141,7 +141,12 @@
 		const entity = $states?.[entity_id];
 		let service = 'toggle';
 
-		if (domain === 'script' || domain === 'scene' || domain === 'button' || domain === 'input_button') {
+		if (
+			domain === 'script' ||
+			domain === 'scene' ||
+			domain === 'button' ||
+			domain === 'input_button'
+		) {
 			service = domain === 'input_button' ? 'press' : 'turn_on';
 		} else if (domain === 'lock') {
 			service = entity?.state === 'locked' ? 'unlock' : 'lock';
@@ -295,7 +300,9 @@
 					<div class="entity-info">
 						<span class="entity-name">{name}</span>
 						{#if entity?.attributes?.unit_of_measurement}
-							<span class="entity-state">{entity.state} {entity.attributes.unit_of_measurement}</span>
+							<span class="entity-state"
+								>{entity.state} {entity.attributes.unit_of_measurement}</span
+							>
 						{:else}
 							<span class="entity-state">{entity?.state || 'unavailable'}</span>
 						{/if}
@@ -312,7 +319,10 @@
 	{:else if cardConfig.type === 'glance'}
 		<!-- GLANCE CARD -->
 		<div class="card-header">{cardConfig.title || ''}</div>
-		<div class="glance-grid" style:grid-template-columns="repeat({cardConfig.columns || entities.length || 3}, 1fr)">
+		<div
+			class="glance-grid"
+			style:grid-template-columns="repeat({cardConfig.columns || entities.length || 3}, 1fr)"
+		>
 			{#each entities as { entity_id, entity, name }}
 				<div
 					class="glance-item"
@@ -374,7 +384,13 @@
 		{#if entities.length > 0}
 			<div class="entity-rows">
 				{#each entities as { entity_id, entity, name }}
-					<div class="entity-row" on:click|stopPropagation={() => handleEntityClick(entity_id)} on:keydown role="button" tabindex="0">
+					<div
+						class="entity-row"
+						on:click|stopPropagation={() => handleEntityClick(entity_id)}
+						on:keydown
+						role="button"
+						tabindex="0"
+					>
 						<div class="entity-icon">
 							<ComputeIcon {entity_id} size="1.4rem" />
 						</div>

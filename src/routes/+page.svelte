@@ -193,9 +193,9 @@
 
 <div
 	id="layout"
-	style:grid-template-columns="{$dashboard?.hide_sidebar || !$dashboard?.sidebar?.length
+	style:--sidebar-col-width="{$dashboard?.hide_sidebar || !$dashboard?.sidebar?.length
 		? '0'
-		: $dashboard?.sidebarWidth || 350}px auto"
+		: $dashboard?.sidebarWidth || 350}px"
 	style:grid-template-rows={$showDrawer ? 'auto auto 1fr' : '0fr auto 1fr'}
 	style:transition="grid-template-rows {$motion}ms ease, grid-template-columns {$motion}ms ease"
 >
@@ -251,6 +251,15 @@
 			'aside main';
 		min-height: 100vh;
 		overflow: hidden;
+		/* Use CSS variable so media queries can override the sidebar column width */
+		grid-template-columns: var(--sidebar-col-width, 350px) auto;
+	}
+
+	/* iPad Air (820px) and similar mid-size tablets: shrink sidebar column */
+	@media (max-width: 1024px) {
+		#layout {
+			grid-template-columns: min(var(--sidebar-col-width, 350px), clamp(180px, 25vw, 260px)) auto;
+		}
 	}
 
 	@media (max-width: 768px) {

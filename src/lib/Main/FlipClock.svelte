@@ -31,14 +31,29 @@
 		const s = now.getSeconds();
 		if (hour12 && h > 12) h -= 12;
 		if (hour12 && h === 0) h = 12;
-		const newH = pad(h), newM = pad(m), newS = pad(s);
+		const newH = pad(h),
+			newM = pad(m),
+			newS = pad(s);
 		for (let i = 0; i < 2; i++) {
-			if (newH[i] !== hours[i]) { flipCounter++; flipKeyH[i] = flipCounter; }
-			if (newM[i] !== minutes[i]) { flipCounter++; flipKeyM[i] = flipCounter; }
-			if (newS[i] !== seconds[i]) { flipCounter++; flipKeyS[i] = flipCounter; }
+			if (newH[i] !== hours[i]) {
+				flipCounter++;
+				flipKeyH[i] = flipCounter;
+			}
+			if (newM[i] !== minutes[i]) {
+				flipCounter++;
+				flipKeyM[i] = flipCounter;
+			}
+			if (newS[i] !== seconds[i]) {
+				flipCounter++;
+				flipKeyS[i] = flipCounter;
+			}
 		}
-		prevHours = hours; prevMinutes = minutes; prevSeconds = seconds;
-		hours = newH; minutes = newM; seconds = newS;
+		prevHours = hours;
+		prevMinutes = minutes;
+		prevSeconds = seconds;
+		hours = newH;
+		minutes = newM;
+		seconds = newS;
 	}
 
 	function handleClick() {
@@ -48,9 +63,27 @@
 
 {#if demo}
 	<div class="fc">
-		<div class="dg"><div class="fd"><div class="h ht"><span>2</span></div><div class="h hb"><span>2</span></div></div><div class="fd"><div class="h ht"><span>3</span></div><div class="h hb"><span>3</span></div></div></div>
+		<div class="dg">
+			<div class="fd">
+				<div class="h ht"><span>2</span></div>
+				<div class="h hb"><span>2</span></div>
+			</div>
+			<div class="fd">
+				<div class="h ht"><span>3</span></div>
+				<div class="h hb"><span>3</span></div>
+			</div>
+		</div>
 		<div class="sep">:</div>
-		<div class="dg"><div class="fd"><div class="h ht"><span>5</span></div><div class="h hb"><span>5</span></div></div><div class="fd"><div class="h ht"><span>9</span></div><div class="h hb"><span>9</span></div></div></div>
+		<div class="dg">
+			<div class="fd">
+				<div class="h ht"><span>5</span></div>
+				<div class="h hb"><span>5</span></div>
+			</div>
+			<div class="fd">
+				<div class="h ht"><span>9</span></div>
+				<div class="h hb"><span>9</span></div>
+			</div>
+		</div>
 	</div>
 {:else}
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -105,11 +138,19 @@
 		font-weight: 500;
 		font-size: 22px;
 	}
-	.fc.sec { font-size: 15px; gap: 8px; }
-	.fc.edit { cursor: pointer; }
+	.fc.sec {
+		font-size: 15px;
+		gap: 8px;
+	}
+	.fc.edit {
+		cursor: pointer;
+	}
 
 	/* ====== Digit Group ====== */
-	.dg { display: flex; gap: 5px; }
+	.dg {
+		display: flex;
+		gap: 5px;
+	}
 
 	/* ====== Single Digit (60×80) ====== */
 	.fd {
@@ -129,7 +170,8 @@
 	}
 
 	/* ====== Text: height 50% (half of half = quarter of digit), centered + shifted ====== */
-	.h span, .fl span {
+	.h span,
+	.fl span {
 		display: flex;
 		position: absolute;
 		left: 0;
@@ -209,12 +251,20 @@
 	}
 
 	@keyframes foldDown {
-		from { transform: rotateX(0deg); }
-		to   { transform: rotateX(-90deg); }
+		from {
+			transform: rotateX(0deg);
+		}
+		to {
+			transform: rotateX(-90deg);
+		}
 	}
 	@keyframes unfoldUp {
-		from { transform: rotateX(90deg); }
-		to   { transform: rotateX(0deg); }
+		from {
+			transform: rotateX(90deg);
+		}
+		to {
+			transform: rotateX(0deg);
+		}
 	}
 
 	/* ====== Colon ====== */
@@ -225,7 +275,12 @@
 		animation: blink 2s ease-in-out infinite;
 	}
 	@keyframes blink {
-		0%, 100% { opacity: 1; }
-		50%      { opacity: 0.25; }
+		0%,
+		100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0.25;
+		}
 	}
 </style>

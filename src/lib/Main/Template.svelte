@@ -50,7 +50,7 @@
 	}
 
 	function handleEditClick() {
-		if ($editMode) {
+		if ($editMode && sel) {
 			openModal(() => import('$lib/Modal/TemplateConfig.svelte'), { sel });
 		}
 	}

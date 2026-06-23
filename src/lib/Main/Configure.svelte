@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { itemHeight, editMode, disableMenuButton, showDrawer, motion } from '$lib/Stores';
+	import { editMode, disableMenuButton, showDrawer, motion } from '$lib/Stores';
 	import { openModal } from 'svelte-modals';
 	import { onDestroy, tick } from 'svelte';
 
@@ -32,7 +32,7 @@
 </script>
 
 <div
-	style:min-height="{$itemHeight}px"
+	style:min-height="clamp(3.5rem, 5vw, 4rem)"
 	on:click={handleClick}
 	style:cursor={$editMode ? 'unset' : 'pointer'}
 	on:keydown

@@ -131,11 +131,11 @@
 					}
 				})
 		);
-		}
+	}
 
-		onDestroy(() => {
-			if (unsubscribeFn) unsubscribeFn();
-		});
+	onDestroy(() => {
+		if (unsubscribeFn) unsubscribeFn();
+	});
 
 	function handlePointerMove(event: any) {
 		hovering = true;

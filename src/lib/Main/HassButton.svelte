@@ -4,7 +4,6 @@
 	import {
 		connection,
 		editMode,
-		itemHeight,
 		lang,
 		motion,
 		onStates,
@@ -132,7 +131,7 @@
 
 	function openConfigModal() {
 		if ($editMode) return;
-		
+
 		const domain = getDomain(sel?.entity_id);
 		switch (domain) {
 			case 'light':
@@ -161,11 +160,14 @@
 			case 'select':
 				openModal(() => import('$lib/Modal/InputSelectModal.svelte'), { sel });
 				break;
+			case 'fan':
+				openModal(() => import('$lib/Modal/FanModal.svelte'), { selected: sel });
+				break;
 			case 'vacuum':
 				openModal(() => import('$lib/Modal/VacuumModal.svelte'), { sel });
 				break;
 			case 'media_player':
-				openModal(() => import('$lib/Modal/MediaPlayer.svelte'), { sel });
+				openModal(() => import('$lib/Modal/MediaPlayer.svelte'), { selected: sel });
 				break;
 			default:
 				// For other entities, open sensor modal as fallback
@@ -365,9 +367,8 @@
 					});
 					break;
 				case 'fan':
-					openModal(() => import('$lib/Modal/FanModal.svelte'), {
-						selected: sel
-					});
+					// fan: click = toggle, long press = FanModal
+					toggle();
 					break;
 				default:
 					openModal(() => import('$lib/Modal/Unknown.svelte'), {
@@ -388,6 +389,9 @@
 					break;
 				case 'switch':
 					await import('$lib/Modal/SwitchModal.svelte');
+					break;
+				case 'fan':
+					await import('$lib/Modal/FanModal.svelte');
 					break;
 				case 'climate':
 					await import('$lib/Modal/ClimateModal.svelte');
@@ -451,24 +455,12 @@
 		}
 	}
 
-	onDestroy(() => unsubscribe?.());
-</script>
-
-<div
-	class="container"
-	bind:this={container}
-	data-state={stateOn}
-	tabindex="-1"
-	style={!$editMode ? 'cursor: pointer;' : ''}
-	style:min-height="{$itemHeight}px"
-	on:pointerenter={handlePointer}
-	on:pointerdown={(event) => {
+	function handlePointerDownWrapper(event: PointerEvent) {
 		handlePointer();
 		handlePointerDown(event);
-	}}
-	on:pointerup={handlePointerUp}
-	on:pointerleave={handlePointerLeave}
-	on:click|stopPropagation={(event) => {
+	}
+
+	function handleClickWrapper(event: MouseEvent) {
 		if (isLongPress) {
 			// Prevent click after long press
 			isLongPress = false;
@@ -479,7 +471,23 @@
 		} else {
 			handleEvent(event);
 		}
-	}}
+	}
+
+	onDestroy(() => unsubscribe?.());
+</script>
+
+<div
+	class="container"
+	bind:this={container}
+	data-state={stateOn}
+	tabindex="-1"
+	style={!$editMode ? 'cursor: pointer;' : ''}
+	style:min-height="clamp(3.5rem, 5vw, 4rem)"
+	on:pointerenter={handlePointer}
+	on:pointerdown={handlePointerDownWrapper}
+	on:pointerup={handlePointerUp}
+	on:pointerleave={handlePointerLeave}
+	on:click|stopPropagation={handleClickWrapper}
 	on:keydown
 	role="button"
 	use:Ripple={{
@@ -526,12 +534,26 @@
 			{/if}
 			<!-- SVG animation ring -->
 			<svg class="icon-ring" viewBox="0 0 100 100" data-state={stateOn}>
-				<circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="2" opacity="0.3" />
+				<circle
+					cx="50"
+					cy="50"
+					r="46"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					opacity="0.3"
+				/>
 			</svg>
 		</div>
 	</div>
 
 	<div class="bottom">
+		{#if getDomain(entity_id) === 'climate' && attributes?.current_temperature != null}
+			<div class="climate-temp" data-state={stateOn}>
+				{Number(attributes.current_temperature).toFixed(1)}°C
+			</div>
+		{/if}
+
 		<div class="name" data-state={stateOn}>
 			{@html (sel?.template?.name && template?.name?.output) ||
 				getName(sel, entity, sectionName) ||
@@ -636,6 +658,19 @@
 		padding-top: 0.1rem;
 	}
 
+	.climate-temp {
+		font-size: 0.62rem;
+		font-weight: 600;
+		color: rgba(255, 255, 255, 0.55);
+		text-align: center;
+		line-height: 1;
+		margin-top: -0.1rem;
+	}
+
+	.climate-temp[data-state='true'] {
+		color: rgba(255, 255, 255, 0.85);
+	}
+
 	.bottom {
 		width: 100%;
 		display: grid;
@@ -710,57 +745,123 @@
 
 	/* Light: bounce scale */
 	@keyframes light-on {
-		0% { transform: scale(0.85); }
-		20% { transform: scale(1.12); }
-		40% { transform: scale(0.93); }
-		60% { transform: scale(1.05); }
-		80% { transform: scale(0.97); }
-		100% { transform: scale(1); }
+		0% {
+			transform: scale(0.85);
+		}
+		20% {
+			transform: scale(1.12);
+		}
+		40% {
+			transform: scale(0.93);
+		}
+		60% {
+			transform: scale(1.05);
+		}
+		80% {
+			transform: scale(0.97);
+		}
+		100% {
+			transform: scale(1);
+		}
 	}
 
 	/* Fan: gentle pulse (air-filter compatible) */
 	@keyframes fan-pulse {
-		0% { transform: scale(1); opacity: 1; }
-		50% { transform: scale(1.08); opacity: 0.85; }
-		100% { transform: scale(1); opacity: 1; }
+		0% {
+			transform: scale(1);
+			opacity: 1;
+		}
+		50% {
+			transform: scale(1.08);
+			opacity: 0.85;
+		}
+		100% {
+			transform: scale(1);
+			opacity: 1;
+		}
 	}
 
 	/* Switch/TV: scaleY open/close */
 	@keyframes tv-on {
-		from { transform: scaleY(0); opacity: 0; }
-		to { transform: scaleY(1); opacity: 1; }
+		from {
+			transform: scaleY(0);
+			opacity: 0;
+		}
+		to {
+			transform: scaleY(1);
+			opacity: 1;
+		}
 	}
 	@keyframes tv-off {
-		from { transform: scaleY(1); opacity: 1; }
-		to { transform: scaleY(0); opacity: 0; }
+		from {
+			transform: scaleY(1);
+			opacity: 1;
+		}
+		to {
+			transform: scaleY(0);
+			opacity: 0;
+		}
 	}
 
 	/* Media: slide up */
 	@keyframes media-on {
-		0% { transform: translateY(30%); opacity: 0; }
-		50% { transform: translateY(-10%); }
-		100% { transform: translateY(0); opacity: 1; }
+		0% {
+			transform: translateY(30%);
+			opacity: 0;
+		}
+		50% {
+			transform: translateY(-10%);
+		}
+		100% {
+			transform: translateY(0);
+			opacity: 1;
+		}
 	}
 
 	/* Climate: pulse glow */
 	@keyframes climate-on {
-		0% { transform: scale(1); filter: brightness(1); }
-		50% { transform: scale(1.08); filter: brightness(1.3); }
-		100% { transform: scale(1); filter: brightness(1); }
+		0% {
+			transform: scale(1);
+			filter: brightness(1);
+		}
+		50% {
+			transform: scale(1.08);
+			filter: brightness(1.3);
+		}
+		100% {
+			transform: scale(1);
+			filter: brightness(1);
+		}
 	}
 
 	/* Cover: rotate swing */
 	@keyframes cover-on {
-		0% { transform: rotateZ(0deg); }
-		70% { transform: rotateZ(-18deg); }
-		85% { transform: rotateZ(-12deg); }
-		100% { transform: rotateZ(-15deg); }
+		0% {
+			transform: rotateZ(0deg);
+		}
+		70% {
+			transform: rotateZ(-18deg);
+		}
+		85% {
+			transform: rotateZ(-12deg);
+		}
+		100% {
+			transform: rotateZ(-15deg);
+		}
 	}
 	@keyframes cover-off {
-		0% { transform: rotateZ(-15deg); }
-		70% { transform: rotateZ(3deg); }
-		85% { transform: rotateZ(-2deg); }
-		100% { transform: rotateZ(0deg); }
+		0% {
+			transform: rotateZ(-15deg);
+		}
+		70% {
+			transform: rotateZ(3deg);
+		}
+		85% {
+			transform: rotateZ(-2deg);
+		}
+		100% {
+			transform: rotateZ(0deg);
+		}
 	}
 
 	/* Apply animations based on domain and state */
@@ -853,7 +954,9 @@
 	.state,
 	.state-inner {
 		white-space: nowrap;
-		transition: color 220ms ease, opacity 220ms ease;
+		transition:
+			color 220ms ease,
+			opacity 220ms ease;
 	}
 
 	.state-inner {

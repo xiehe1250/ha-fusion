@@ -455,5 +455,4 @@
 	.disabled {
 		opacity: 0.7;
 	}
-
 </style>

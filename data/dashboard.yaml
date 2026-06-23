@@ -116,71 +116,12 @@ views:
                 entity_id: fan.xiaomi_cn_2150351834_sa6_s_2_air_purifier
                 icon: cbi:xiaomi-air-purifier-pro
                 name: 空气净化器
+              - id: 768330765214
+                type: hass_button
+                entity_id: vacuum.zhui_mi_w20_pro_ultra
+                icon: streamline-freehand:cleaning-robot-vacuum
+                name: 追觅
             id: 4549686492585
-      - name: 环境监测
-        items:
-          - id: 3157527573253
-            type: graph
-            entity_id: sensor.daikin_air_sensor_fcfd1c_daikin_temperature_sensor
-            name: 温度
-          - id: 9405664820625
-            type: graph
-            entity_id: sensor.daikin_air_sensor_fcfd1c_daikin_humidity_sensor
-          - id: 5674538526163
-            type: graph
-            entity_id: sensor.daikin_air_sensor_fcfd1c_daikin_pm2_5_sensor
-          - id: 2372001172335
-            type: template
-            template: >-
-              {% set t =
-
-              states('sensor.daikin_air_sensor_fcfd1c_daikin_temperature_sensor')
-
-              | float(0)
-
-              %}
-
-
-              <center>
-
-
-              <div style="
-
-              font-size:48px;
-
-              font-weight:500;
-
-
-              color:
-
-              {% if t < 18 %}
-
-              #4A90E2
-
-              {% elif t < 26 %}
-
-              #66BB6A
-
-              {% elif t < 30 %}
-
-              #FF9800
-
-              {% else %}
-
-              #FF5252
-
-              {% endif %}
-
-              ;
-
-              ">
-
-
-              {{ t }}°
-
-
-              </div>
-        id: 3808964549390
       - type: horizontal-stack
         sections:
           - name: 媒体
@@ -197,10 +138,6 @@ views:
             id: 9153890352964
           - name: 摄像头
             items:
-              - id: 4201456157781
-                type: camera
-                entity_id: camera.lu_tai_dui_wai
-                grid_span: 2
               - id: 5105183878951
                 type: camera
                 entity_id: camera.generic_dahua_001
@@ -210,14 +147,249 @@ views:
                 entity_id: camera.lu_tai_dui_wai
                 grid_span: 2
             id: 2318927918231
-          - name: 机房
-            items: []
-            id: 433941466504
+          - name: 部分
+            items:
+              - id: 7777000000001
+                type: map
+                entity_ids:
+                  - device_tracker.517
+                  - device_tracker.886
+                zoom: 14
+            id: 3777852124734
         id: 5768726495924
   - name: 二楼
     icon: mdi:home-floor-2
     id: 5813909951190
-    sections: []
+    sections:
+      - type: horizontal-stack
+        sections:
+          - name: 灯光
+            items:
+              - id: 5960806343695
+                type: hass_button
+                entity_id: light.leshi_cn_623031778_wyfa01_s_2_light
+                icon: cbi:ceiling-fan-light
+              - id: 6851602086854
+                type: hass_button
+                entity_id: >-
+                  light.zhu_ren_fang_zhu_ren_fang_kai_guan_xi_ding_deng_zhong_jian
+                icon: ph:lamp-light
+                name: 书房吸顶灯
+              - id: 9511586411187
+                type: hass_button
+                entity_id: light.yeelink_cn_684482576_v6_s_2_light
+                icon: marketeq:bathroom-2
+                name: 吸顶灯
+              - id: 3676289791851
+                type: hass_button
+                entity_id: light.novo_cn_1113891515_n31_s_3_ambient_light
+                name: 氛围灯
+                icon: cbi:rooms-bedroom
+              - id: 2278144903562
+                type: hass_button
+                entity_id: light.zhu_ren_fang_deng_dai
+                icon: cbi:stage-light
+              - id: 64573586334
+                type: hass_button
+                entity_id: light.yeelink_cn_684464637_v6_s_2_light
+                name: 吸顶灯
+                icon: cbi:yeelight-ceiling
+              - id: 2771441363908
+                type: hass_button
+                entity_id: >-
+                  light.er_tong_fang_ling_pu_hong_ping_kai_guan_s2_2_xi_ding_deng_an_jian_3
+                icon: material-symbols-light:light-outline-sharp
+                name: 儿童房吸顶灯
+              - id: 2563949538334
+                type: hass_button
+                entity_id: light.novo_cn_1113905134_n31_s_3_ambient_light
+                name: 氛围灯
+                icon: openmoji:children-crossing
+              - id: 6909255709482
+                type: hass_button
+                entity_id: >-
+                  light.er_tong_fang_ling_pu_hong_ping_kai_guan_s2_2_wan_ju_ju_an_jian_1
+                icon: mdi:child-toy
+              - id: 5154427835240
+                type: hass_button
+                entity_id: light.gmn_cn_1090310365_wy0a02_s_2_light
+                name: 筒灯
+                icon: mdi:light-flood-down
+              - id: 6433046038141
+                type: hass_button
+                entity_id: light.gmn_cn_1090324309_wy0a02_s_2_light
+                icon: mdi:light-flood-down
+                name: 筒灯2
+              - id: 5409309272884
+                type: hass_button
+                entity_id: light.lemesh_cn_1115215321_wy0c15_s_2_light
+                icon: cbi:yeelight-cube2
+                name: 晴空灯
+              - id: 1181097383
+                type: hass_button
+                entity_id: light.lemesh_cn_1115217069_wy0c15_s_2_light
+                icon: cbi:yeelight-cube2
+                name: 晴空灯
+            id: 8303389323885
+          - name: 开关
+            items:
+              - id: 8877835978549
+                type: sensor_group
+                groups:
+                  - name: 主人房
+                    icon: mdi:gauge
+                    entity_ids:
+                      - sensor.daikin_air_sensor_fd1b50_daikin_pm2_5_sensor
+                      - >-
+                        sensor.daikin_air_sensor_fd1b50_daikin_temperature_sensor
+                      - sensor.daikin_air_sensor_fd1b50_daikin_humidity_sensor
+                      - sensor.daikin_air_sensor_fd1b50_daikin_co2_sensor
+                      - sensor.211106245280490_pm25
+                      - sensor.211106245280490_hcho
+                  - name: '儿童房 '
+                    icon: mdi:gauge
+                    entity_ids:
+                      - sensor.daikin_air_sensor_fd55d4_daikin_co2_sensor
+                      - sensor.daikin_air_sensor_fd55d4_daikin_pm2_5_sensor
+                      - >-
+                        sensor.daikin_air_sensor_fd55d4_daikin_temperature_sensor
+                      - sensor.daikin_air_sensor_fd55d4_daikin_humidity_sensor
+                  - name: 书房
+                    icon: mdi:gauge
+                    entity_ids:
+                      - sensor.daikin_air_sensor_fbafbc_daikin_co2_sensor
+                      - sensor.daikin_air_sensor_fbafbc_daikin_pm2_5_sensor
+                      - >-
+                        sensor.daikin_air_sensor_fbafbc_daikin_temperature_sensor
+                      - sensor.daikin_air_sensor_fbafbc_daikin_humidity_sensor
+                  - name: 起居室
+                    icon: mdi:gauge
+                    entity_ids:
+                      - sensor.daikin_air_sensor_fbafd4_daikin_co2_sensor
+                      - sensor.daikin_air_sensor_fbafd4_daikin_pm2_5_sensor
+                      - >-
+                        sensor.daikin_air_sensor_fbafd4_daikin_temperature_sensor
+                      - sensor.daikin_air_sensor_fbafd4_daikin_humidity_sensor
+            id: 5022895277343
+          - name: 环境
+            items:
+              - id: 4477434362821
+                type: hass_button
+                entity_id: climate.090615_cn_proxy_707764069_00003_ktp
+                name: 主人房
+                icon: simple-icons:panasonic
+              - id: 9088337144152
+                type: hass_button
+                entity_id: fan.leshi_cn_623031778_wyfa01_s_3_fan
+                name: 风扇
+                icon: mdi:ceiling-fan
+              - id: 3517522497269
+                type: hass_button
+                entity_id: cover.novo_cn_1113891515_n31_s_2_curtain
+                name: 主人房
+              - id: 7449488675329
+                type: hass_button
+                entity_id: climate.xiaomi_cn_961342950_h09h00
+                name: 空调
+                icon: simple-icons:xiaomi
+              - id: 819542189158
+                type: hass_button
+                entity_id: climate.090615_cn_proxy_707764069_00005_ktp
+                name: 儿童房空调
+                icon: cbi:panasonic
+              - id: 3707470914042
+                type: hass_button
+                entity_id: climate.090615_cn_proxy_707764069_00004_ktp
+                name: 起居室空调
+                icon: cbi:panasonic
+              - id: 188833534063
+                type: hass_button
+                entity_id: cover.novo_cn_1113905134_n31_s_2_curtain
+                name: 儿童房
+              - id: 6773173320295
+                type: hass_button
+                entity_id: switch.211106245280490_power
+                name: 空气净化器
+                icon: cbi:xiaomi-air-purifier
+              - id: 4437980719403
+                type: hass_button
+                entity_id: vacuum.xiaomi_cn_1065635944_d103cn
+                icon: streamline-freehand:cleaning-robot-vacuum
+            id: 7228769719712
+        id: 6446236188619
+  - name: 三楼
+    id: 4453583096779
+    sections:
+      - type: horizontal-stack
+        sections:
+          - name: 部分
+            items:
+              - id: 9356683471735
+                type: hass_button
+                entity_id: light.novo_cn_1113726327_n31_s_3_ambient_light
+                icon: tabler:blob-filled
+              - id: 3107014380697
+                type: hass_button
+                entity_id: light.yu_le_fang_xi_ding_deng_kai_guan_kai_guan
+                icon: icon-park-solid:game-three
+                name: 吸顶灯
+              - id: 3630326984832
+                type: hass_button
+                entity_id: light.ouchen_cn_741127790_m01_s_3_light
+                icon: game-icons:clothesline
+                name: 晾衣架灯
+              - id: 698534226562
+                type: hass_button
+                entity_id: light.lu_tai_xi_yi_ji_deng_guang
+                name: 洗衣机灯
+                icon: solar:washing-machine-minimalistic-bold-duotone
+              - id: 8815613286976
+                type: hass_button
+                entity_id: light.yu_le_fang_shu_zhuo_deng_kai_guan_kai_guan
+                icon: solar:lamp-bold
+                name: 书桌
+            id: 4507180754314
+          - name: 家务
+            items:
+              - id: 3824640131646
+                type: hass_button
+                entity_id: button.xue_bi_ce_suo_dump_litter
+                icon: noto-v1:cat
+                name: 倾倒猫砂
+              - id: 1954164361178
+                type: hass_button
+                entity_id: cover.ouchen_cn_741127790_m01_s_2_airer
+                name: 晾衣架
+              - id: 9475312385774
+                type: hass_button
+                entity_id: button.h1_neo_start
+                icon: mingcute:wash-machine-fill
+              - id: 4779948869921
+                type: hass_button
+                entity_id: switch.cuco_cn_482740517_cp1_on_p_2_1
+                icon: mingcute:flower-4-fill
+                name: 浇花
+            id: 896116144198
+          - name: 环境
+            items:
+              - id: 7454846853531
+                type: hass_button
+                entity_id: climate.090615_cn_proxy_707764069_00001_ktp
+                name: 空调
+              - id: 9504352282937
+                type: hass_button
+                entity_id: cover.novo_cn_1113726327_n31_s_2_curtain
+                name: 窗帘
+              - id: 990994021165
+                type: hass_button
+                entity_id: sensor.daikin_air_sensor_fcfd28_daikin_temperature_sensor
+                name: 温度
+              - id: 6720200286320
+                type: hass_button
+                entity_id: sensor.daikin_air_sensor_fcfd28_daikin_pm2_5_sensor
+                name: PM2.5
+            id: 5290130132171
+        id: 5784034323347
 sidebar:
   - id: 3781246197457
     type: template

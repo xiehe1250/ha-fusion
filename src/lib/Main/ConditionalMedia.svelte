@@ -2,7 +2,6 @@
 	import {
 		states,
 		connection,
-		itemHeight,
 		editMode,
 		youtubeData,
 		youtubeAddon,
@@ -48,7 +47,7 @@
 	// 构建可滑动的卡片列表：每个 media_player 一个卡片 + Plex recently added（如果有配置）
 	$: swipeCards = (() => {
 		const cards: Array<{ type: 'player' | 'plex'; entityId?: string; name?: string }> = [];
-		
+
 		// 添加每个 media_player 作为独立卡片
 		if (sel?.media_players && Array.isArray(sel.media_players)) {
 			for (const mp of sel.media_players) {
@@ -62,7 +61,7 @@
 				}
 			}
 		}
-		
+
 		// 如果有 Plex entity_id 配置，添加 Plex recently added 卡片作为最后一张
 		if (sel?.entity_id) {
 			cards.push({
@@ -71,7 +70,7 @@
 				name: sel?.name || 'Plex'
 			});
 		}
-		
+
 		return cards;
 	})();
 
@@ -103,7 +102,8 @@
 	$: entity_entity_picture = entity?.attributes?.entity_picture;
 
 	// 当前卡片的媒体播放器状态
-	$: cardPlayer = currentCard?.type === 'player' ? $states?.[currentCard.entityId || ''] : undefined;
+	$: cardPlayer =
+		currentCard?.type === 'player' ? $states?.[currentCard.entityId || ''] : undefined;
 	$: cardState = cardPlayer?.state;
 	$: cardAttr = cardPlayer?.attributes;
 	$: card_media_artist = cardAttr?.media_artist;
@@ -126,9 +126,10 @@
 	$: if (currentEntityId || currentState || timeout || sel?.show_timeout) handlePaused(false);
 
 	// 判断当前卡片是否活跃（正在播放或暂停未过期）
-	$: cardActive = currentCard?.type === 'player' && 
+	$: cardActive =
+		currentCard?.type === 'player' &&
 		(cardState === 'playing' || (cardState === 'paused' && !pauseExpired));
-	
+
 	// 向后兼容的 active 变量（任何播放器活跃时为 true）
 	$: active = currentState === 'playing' || (currentState === 'paused' && !pauseExpired);
 
@@ -416,7 +417,8 @@
 	class="container"
 	class:swipeable={!$editMode && swipeCards.length > 1}
 	style:background-image={backgroundImage}
-	style:height="calc({$itemHeight}px * 4 + 0.4rem * 3)"
+	style:height="100%"
+	style:min-height="clamp(14rem, 20vw, 20rem)"
 	style:cursor={$editMode || !active ? 'unset' : 'pointer'}
 	use:Ripple={{
 		...$ripple,
@@ -524,16 +526,14 @@
 									{@html '&nbsp;'.repeat(4)}
 								</svelte:component>
 							{/await}
+						{:else if card_media_artist && card_media_title}
+							{card_media_artist} - {card_media_title}
+						{:else if card_media_artist && !card_media_title}
+							{card_media_artist}
+						{:else if !card_media_artist && card_media_title}
+							{card_media_title}
 						{:else}
-							{#if card_media_artist && card_media_title}
-								{card_media_artist} - {card_media_title}
-							{:else if card_media_artist && !card_media_title}
-								{card_media_artist}
-							{:else if !card_media_artist && card_media_title}
-								{card_media_title}
-							{:else}
-								<StateLogic entity_id={cardPlayer?.entity_id} selected={undefined} />
-							{/if}
+							<StateLogic entity_id={cardPlayer?.entity_id} selected={undefined} />
 						{/if}
 					</div>
 				</div>
@@ -543,17 +543,14 @@
 				<div class="idle-container">
 					{#if card_entity_picture}
 						<!-- 有设备图片时显示设备图片 -->
-						<div 
-							class="idle-product"
-							style="background-image: url('{card_entity_picture}')"
-						></div>
+						<div class="idle-product" style="background-image: url('{card_entity_picture}')"></div>
 					{:else}
 						<!-- 无设备图片时显示图标 -->
 						<div class="idle-icon">
 							<ComputeIcon entity_id={cardPlayer?.entity_id || ''} skipEntityPicture={true} />
 						</div>
 					{/if}
-					
+
 					<div class="idle-name">
 						{currentCard?.name || $lang('idle')}
 					</div>

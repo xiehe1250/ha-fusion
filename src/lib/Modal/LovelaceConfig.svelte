@@ -79,7 +79,12 @@ graph: line`
 {#if isOpen}
 	<Modal on:transitionend={handleEvent}>
 		<h1 slot="title">
-			<Icon icon="mdi:code-braces" width="20" height="20" style="vertical-align: middle; margin-right: 0.3em;" />
+			<Icon
+				icon="mdi:code-braces"
+				width="20"
+				height="20"
+				style="vertical-align: middle; margin-right: 0.3em;"
+			/>
 			{$lang('lovelace') || 'Lovelace YAML'}
 		</h1>
 

@@ -48,7 +48,7 @@
 {:else if getDomain(entity_id) === 'climate' && attributes?.hvac_action}
 	{$lang(attributes?.hvac_action)}
 
-	<!-- Climate -->
+	<!-- Update -->
 {:else if getDomain(entity_id) === 'update'}
 	{#if attributes?.in_progress}
 		{typeof attributes?.in_progress === 'number'

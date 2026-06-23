@@ -277,6 +277,36 @@ export interface WeatherForecastItem {
 	hide_mobile?: boolean;
 }
 
+export interface LovelaceItem {
+	type?: string;
+	id?: number;
+	yaml?: string;
+	height?: number;
+	span_x?: number;
+	hide_mobile?: boolean;
+}
+
+export interface MapCardItem {
+	type: 'map';
+	id: number;
+	/** entity_ids of device_tracker / person entities to show on the map */
+	entity_ids?: string[];
+	/** default zoom level */
+	zoom?: number;
+}
+
+export interface SensorGroup {
+	name: string;
+	icon: string;
+	entity_ids: string[];
+}
+
+export interface SensorGroupItem {
+	type: 'sensor_group';
+	id: number;
+	groups?: SensorGroup[];
+}
+
 export interface YouTubeEvent {
 	message: 'auth-pending' | 'auth' | 'update-credentials' | 'auth-error' | 'error';
 	verification_url?: string;

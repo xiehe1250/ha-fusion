@@ -10,11 +10,22 @@
 	import Graph from '$lib/Main/Graph.svelte';
 	import Configure from '$lib/Main/Configure.svelte';
 	import Empty from '$lib/Main/Empty.svelte';
+	import MapCard from '$lib/Main/MapCard.svelte';
+	import SensorGroupCard from '$lib/Main/SensorGroupCard.svelte';
 
 	export let item: any;
 	export let sectionName: string | undefined = undefined;
 
-	const large = ['conditional_media', 'picture_elements', 'camera', 'template', 'bar', 'graph'];
+	const large = [
+		'conditional_media',
+		'picture_elements',
+		'camera',
+		'template',
+		'bar',
+		'graph',
+		'map',
+		'sensor_group'
+	];
 </script>
 
 {#if item?.[SHADOW_ITEM_MARKER_PROPERTY_NAME] && large.includes(item?.type)}
@@ -39,6 +50,10 @@
 	<Bar sel={item} />
 {:else if item?.type === 'graph'}
 	<Graph sel={item} />
+{:else if item?.type === 'map'}
+	<MapCard sel={item} />
+{:else if item?.type === 'sensor_group'}
+	<SensorGroupCard sel={item} />
 {:else if item?.type === 'empty'}
 	<Empty sel={item} />
 {:else}

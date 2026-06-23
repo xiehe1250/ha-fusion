@@ -169,7 +169,7 @@
 	nav {
 		margin-top: 1.35rem;
 		grid-area: nav;
-		padding: 0 2rem;
+		padding: 0 clamp(1rem, 2vw, 2rem);
 	}
 
 	section {

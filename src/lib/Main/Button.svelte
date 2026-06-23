@@ -4,7 +4,6 @@
 	import {
 		connection,
 		editMode,
-		itemHeight,
 		lang,
 		motion,
 		onStates,
@@ -351,9 +350,8 @@
 					break;
 
 				case 'fan':
-					openModal(() => import('$lib/Modal/FanModal.svelte'), {
-						selected: sel
-					});
+					// fan: click = toggle, long press opens FanModal
+					toggle();
 					break;
 
 				default:
@@ -384,6 +382,9 @@
 					break;
 				case 'media_player':
 					await import('$lib/Modal/MediaPlayer.svelte');
+					break;
+				case 'fan':
+					await import('$lib/Modal/FanModal.svelte');
 					break;
 				default:
 					await import('$lib/Modal/Unknown.svelte');
@@ -453,7 +454,7 @@
 	data-state={stateOn}
 	tabindex="-1"
 	style={!$editMode ? 'cursor: pointer;' : ''}
-	style:min-height="{$itemHeight}px"
+	style:min-height="clamp(3.5rem, 5vw, 4rem)"
 	on:pointerenter={handlePointer}
 	on:pointerdown={handlePointer}
 	use:Ripple={{
