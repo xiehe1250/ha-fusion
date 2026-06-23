@@ -70,10 +70,11 @@ docker run -d \
 ### 3. Home Assistant Add-on
 
 If you prefer installing it inside Home Assistant via the Add-on Store:
-1. Fork the Add-on configuration repository: [addon-ha-fusion](https://github.com/matt8707/addon-ha-fusion).
-2. Edit `ha-fusion/config.yaml` in your fork to set `image: ghcr.io/xiehe1250/ha-fusion`.
-3. In Home Assistant, go to **Settings > Add-ons > Add-on Store**, click the three dots, and add your forked repository URL.
-4. Install and start your customized version of ha-fusion.
+1. Go to the original Add-on repository: [addon-ha-fusion](https://github.com/matt8707/addon-ha-fusion) and **Fork** it to your own GitHub account.
+2. In your newly forked repository, edit the `ha-fusion/config.yaml` file. Change the `image` field to point to your custom Docker image: `image: ghcr.io/xiehe1250/ha-fusion`.
+3. In Home Assistant, go to **Settings > Add-ons > Add-on Store**, click the three dots in the top right corner, and select **Repositories**.
+4. **CRITICAL**: Enter the URL of your **GitHub repository** (e.g., `https://github.com/xiehe1250/addon-ha-fusion`), *NOT* the Docker image URL!
+5. Refresh the page, search for "ha-fusion", install and start your customized version.
 
 ---
 
