@@ -7,13 +7,13 @@ const app = express();
 
 // environment
 dotenv.config();
-const ADDON = process.env.ADDON === 'true';
+const ADDON = process.env.ADDON === 'true' || !!process.env.SUPERVISOR_TOKEN;
 const { PORT, HASS_PORT, EXPOSED_PORT } = process.env;
 
 // dynamically set target
 const entryMiddleware = async (req, res, next) => {
 	// default
-	let target = process.env.HASS_URL;
+	let target = process.env.HASS_URL || (ADDON ? 'http://supervisor/core' : undefined);
 
 	if (ADDON) {
 		// headers
