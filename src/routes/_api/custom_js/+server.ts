@@ -8,7 +8,9 @@ import type { RequestHandler } from './$types';
  */
 export const GET: RequestHandler = async ({ setHeaders }) => {
 	let file;
-	const path = './data/custom_javascript.js';
+	const isAddon = process.env.ADDON === 'true' || !!process.env.SUPERVISOR_TOKEN;
+	const DATA_DIR = isAddon ? '/data' : './data';
+	const path = `${DATA_DIR}/custom_javascript.js`;
 
 	try {
 		file = await readFile(path, 'utf-8');

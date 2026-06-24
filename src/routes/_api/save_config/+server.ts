@@ -15,8 +15,11 @@ export const POST: RequestHandler = async ({ request }) => {
 		});
 	}
 
+	const isAddon = process.env.ADDON === 'true' || !!process.env.SUPERVISOR_TOKEN;
+	const DATA_DIR = isAddon ? '/data' : './data';
+
 	try {
-		await writeFile('data/configuration.yaml', data);
+		await writeFile(`${DATA_DIR}/configuration.yaml`, data);
 		return json({ action: 'saved' });
 	} catch (error) {
 		return new Response(JSON.stringify({ error: error }), {

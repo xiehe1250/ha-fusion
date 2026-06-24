@@ -27,6 +27,9 @@ async function loadFile(file: string) {
 	}
 }
 
+const isAddon = process.env.ADDON === 'true' || !!process.env.SUPERVISOR_TOKEN;
+const DATA_DIR = isAddon ? '/data' : './data';
+
 /**
  * Server load function
  */
@@ -38,8 +41,8 @@ export async function load({ request }): Promise<{
 }> {
 	// must be loaded first
 	const [configuration, dashboard] = await Promise.all([
-		loadFile('./data/configuration.yaml'),
-		loadFile('./data/dashboard.yaml')
+		loadFile(`${DATA_DIR}/configuration.yaml`),
+		loadFile(`${DATA_DIR}/dashboard.yaml`)
 	]);
 
 	// hassUrl from env or server.js

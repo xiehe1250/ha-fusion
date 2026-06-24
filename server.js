@@ -2,6 +2,8 @@ import { handler } from './build/handler.js';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 
 const app = express();
 
@@ -9,6 +11,28 @@ const app = express();
 dotenv.config();
 const ADDON = process.env.ADDON === 'true' || !!process.env.SUPERVISOR_TOKEN;
 const { PORT, HASS_PORT, EXPOSED_PORT } = process.env;
+
+// Initialize /data directory in HA Addon mode
+if (ADDON) {
+	const srcDir = './data';
+	const destDir = '/data';
+	try {
+		if (!fs.existsSync(destDir)) {
+			fs.mkdirSync(destDir, { recursive: true });
+		}
+		const filesToCopy = ['configuration.yaml', 'dashboard.yaml', 'custom_javascript.js', 'version.json'];
+		for (const file of filesToCopy) {
+			const srcFile = path.join(srcDir, file);
+			const destFile = path.join(destDir, file);
+			if (!fs.existsSync(destFile) && fs.existsSync(srcFile)) {
+				fs.copyFileSync(srcFile, destFile);
+				console.log(`Copied default ${file} to /data/`);
+			}
+		}
+	} catch (err) {
+		console.error('Failed to initialize /data directory:', err);
+	}
+}
 
 // dynamically set target
 const entryMiddleware = async (req, res, next) => {

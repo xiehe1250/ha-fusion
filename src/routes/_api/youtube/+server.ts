@@ -7,7 +7,10 @@ import yaml from 'js-yaml';
 let youtube: Innertube | undefined;
 let event: YouTubeEvent | undefined;
 
-const credentialsFilePath = './data/youtube_credentials.json';
+const isAddon = process.env.ADDON === 'true' || !!process.env.SUPERVISOR_TOKEN;
+const DATA_DIR = isAddon ? '/data' : './data';
+const credentialsFilePath = `${DATA_DIR}/youtube_credentials.json`;
+const configFilePath = `${DATA_DIR}/configuration.yaml`;
 
 /**
  * Handle post requests
@@ -32,7 +35,6 @@ export const POST: RequestHandler = async ({ request }) => {
 				console.error(err);
 			}
 			unlinkSync(credentialsFilePath);
-			const configFilePath = './data/configuration.yaml';
 			let config = await loadFile(configFilePath);
 
 			if (config?.addons?.youtube) {
