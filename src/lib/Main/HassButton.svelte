@@ -169,6 +169,21 @@
 			case 'media_player':
 				openModal(() => import('$lib/Modal/MediaPlayer.svelte'), { selected: sel });
 				break;
+			case 'cover':
+				openModal(() => import('$lib/Modal/CoverModal.svelte'), { selected: sel });
+				break;
+			case 'lock':
+				openModal(() => import('$lib/Modal/LockModal.svelte'), { sel });
+				break;
+			case 'valve':
+				openModal(() => import('$lib/Modal/ValveModal.svelte'), { sel });
+				break;
+			case 'humidifier':
+				openModal(() => import('$lib/Modal/HumidifierModal.svelte'), { sel });
+				break;
+			case 'water_heater':
+				openModal(() => import('$lib/Modal/WaterHeaterModal.svelte'), { sel });
+				break;
 			default:
 				// For other entities, open sensor modal as fallback
 				openModal(() => import('$lib/Modal/SensorModal.svelte'), { sel });
