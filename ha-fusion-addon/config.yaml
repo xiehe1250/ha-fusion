@@ -1,5 +1,5 @@
 name: Fusion (Custom Edition)
-version: "latest"
+version: "main"
 slug: ha_fusion_custom
 description: A modern, easy-to-use and performant custom Home Assistant dashboard (xiehe1250 fork).
 arch:
