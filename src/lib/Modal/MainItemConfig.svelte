@@ -25,6 +25,7 @@
 	import Graph from '$lib/Main/Graph.svelte';
 	import Ripple from 'svelte-ripple';
 	import PictureElements from '$lib/Main/PictureElements.svelte';
+	import VehicleCard from '$lib/Main/VehicleCard.svelte';
 
 	export let isOpen: boolean;
 	export let sel: any;
@@ -175,6 +176,13 @@
 			component: undefined,
 			props: {},
 			style: { 'text-align': 'center' }
+		},
+		{
+			id: 'vehicle',
+			type: 'Vehicle',
+			component: undefined,
+			props: {},
+			style: { 'text-align': 'center' }
 		}
 	];
 
@@ -243,6 +251,9 @@
 				break;
 			case 'sensor_group':
 				openModal(() => import('$lib/Modal/SensorGroupConfig.svelte'), { sel });
+				break;
+			case 'vehicle':
+				openModal(() => import('$lib/Modal/VehicleConfig.svelte'), { sel });
 				break;
 			default:
 				openModal(() => import('$lib/Modal/MainItemConfig.svelte'), { sel });

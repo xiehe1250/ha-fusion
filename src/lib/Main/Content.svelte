@@ -12,6 +12,7 @@
 	import Empty from '$lib/Main/Empty.svelte';
 	import MapCard from '$lib/Main/MapCard.svelte';
 	import SensorGroupCard from '$lib/Main/SensorGroupCard.svelte';
+	import VehicleCard from '$lib/Main/VehicleCard.svelte';
 
 	export let item: any;
 	export let sectionName: string | undefined = undefined;
@@ -24,7 +25,8 @@
 		'bar',
 		'graph',
 		'map',
-		'sensor_group'
+		'sensor_group',
+		'vehicle'
 	];
 </script>
 
@@ -54,6 +56,8 @@
 	<MapCard sel={item} />
 {:else if item?.type === 'sensor_group'}
 	<SensorGroupCard sel={item} />
+{:else if item?.type === 'vehicle'}
+	<VehicleCard sel={item} />
 {:else if item?.type === 'empty'}
 	<Empty sel={item} />
 {:else}

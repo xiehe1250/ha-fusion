@@ -188,7 +188,8 @@
 			'bar',
 			'graph',
 			'map',
-			'sensor_group'
+			'sensor_group',
+			'vehicle'
 		];
 		const hassSmall = ['hass_button'];
 		let colSpan: number, rowSpan: number;
