@@ -16,4 +16,6 @@ ingress_stream: true
 hassio_api: true
 ports:
   8099/tcp: null
+environment:
+  ADDON: "true"
 image: ghcr.io/xiehe1250/ha-fusion
