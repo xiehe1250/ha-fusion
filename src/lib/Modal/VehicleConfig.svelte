@@ -63,6 +63,37 @@
 		if (win) set('window_entity', win);
 	}
 
+	let uploading = false;
+
+	async function handleImageUpload(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const file = target?.files?.[0];
+		if (!file) return;
+
+		uploading = true;
+		const formData = new FormData();
+		formData.append('file', file);
+
+		try {
+			const res = await fetch('/_api/upload_image', {
+				method: 'POST',
+				body: formData
+			});
+			if (res.ok) {
+				const data = await res.json();
+				if (data.url) {
+					set('image_url', '/' + data.url);
+				}
+			} else {
+				console.error('Failed to upload image');
+			}
+		} catch (err) {
+			console.error('Error uploading image:', err);
+		} finally {
+			uploading = false;
+		}
+	}
+
 	onDestroy(() => $record());
 </script>
 
@@ -91,7 +122,13 @@
 
 				<label class="label-group">
 					<span>Car Image URL</span>
-					<input class="input" type="text" value={sel?.image_url || ''} on:input={(e) => set('image_url', e.currentTarget.value)} placeholder="e.g. /local/car.png" />
+					<div class="upload-row">
+						<input class="input" type="text" value={sel?.image_url || ''} on:input={(e) => set('image_url', e.currentTarget.value)} placeholder="e.g. /local/car.png" style="flex: 1;" />
+						<label class="upload-btn" class:uploading={uploading} use:Ripple={$ripple}>
+							<span>{uploading ? 'Uploading...' : 'Upload'}</span>
+							<input type="file" accept="image/*" on:change={handleImageUpload} style="display: none;" disabled={uploading} />
+						</label>
+					</div>
 				</label>
 
 				<div class="discovery-sec">
@@ -233,5 +270,36 @@
 
 	.disc-btn:hover {
 		opacity: 0.9;
+	}
+
+	.upload-row {
+		display: flex;
+		gap: 0.5rem;
+		width: 100%;
+	}
+
+	.upload-btn {
+		background: rgba(255, 255, 255, 0.1);
+		color: #fff;
+		border: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: 0.4rem;
+		padding: 0 0.8rem;
+		font-size: 0.8rem;
+		font-weight: 500;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		white-space: nowrap;
+		transition: background 0.2s ease;
+	}
+
+	.upload-btn:hover:not(.uploading) {
+		background: rgba(255, 255, 255, 0.15);
+	}
+
+	.upload-btn.uploading {
+		opacity: 0.6;
+		cursor: not-allowed;
 	}
 </style>
